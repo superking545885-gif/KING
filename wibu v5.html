@@ -1,0 +1,3066 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no">
+    <title>WIBU BUG - Premium Edition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, 'Segoe UI', 'Poppins', system-ui, sans-serif;
+            background: #0a0e1a;
+            color: #d4e4fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            width: 100%;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            height: 100vh;
+            max-height: 850px;
+            background: linear-gradient(160deg, #0d1a30 0%, #060e1f 100%);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            box-shadow: 0 0 40px rgba(74, 158, 255, 0.05);
+        }
+
+        .app-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 50% 0%, rgba(74, 158, 255, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 10px 10px;
+            padding-bottom: 65px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+            z-index: 1;
+            will-change: transform;
+        }
+
+        .main-content::-webkit-scrollbar {
+            width: 2px;
+        }
+        .main-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .main-content::-webkit-scrollbar-thumb {
+            background: #4a9eff30;
+            border-radius: 10px;
+        }
+
+        /* Landing Page */
+        .landing-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 20px;
+            animation: fadeInUp 0.8s ease;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .logo-area {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .logo-area h1 {
+            font-size: 28px;
+            color: #4a9eff;
+            margin-top: 16px;
+            text-shadow: 0 0 30px rgba(74, 158, 255, 0.2);
+            letter-spacing: 2px;
+        }
+        .logo-area p {
+            font-size: 11px;
+            opacity: 0.4;
+            letter-spacing: 3px;
+        }
+        .landing-img {
+            width: 130px;
+            height: 130px;
+            background: linear-gradient(135deg, #1a2a4a, #0d1f3c);
+            border-radius: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            border: 2px solid #4a9eff;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(74, 158, 255, 0.15);
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 40px rgba(74, 158, 255, 0.15); }
+            50% { box-shadow: 0 0 60px rgba(74, 158, 255, 0.25); }
+        }
+        .landing-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .button-group {
+            width: 100%;
+            padding: 0 16px;
+        }
+        .landing-btn {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border-radius: 60px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .landing-btn:active { transform: scale(0.97); }
+        .btn-get { 
+            background: linear-gradient(135deg, #4a9eff, #2a6edf); 
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(74, 158, 255, 0.3);
+        }
+        .btn-login { 
+            background: transparent; 
+            color: #4a9eff; 
+            border: 1.5px solid #4a9eff;
+            backdrop-filter: blur(10px);
+        }
+        .btn-login:active { background: rgba(74, 158, 255, 0.08); }
+        .footer-text { text-align: center; margin-top: 30px; font-size: 9px; opacity: 0.2; letter-spacing: 2px; }
+
+        /* Video Splash */
+        .video-splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            background: #000000;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .video-splash video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .skip-btn {
+            position: absolute;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(20px);
+            color: white;
+            border: 1px solid #4a9eff30;
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2001;
+        }
+        .skip-btn:active { transform: translateX(-50%) scale(0.95); }
+        .loading-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 2001;
+        }
+        .loading-ring {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid transparent;
+            border-top: 3px solid #4a9eff;
+            border-right: 3px solid #2a6edf;
+            border-radius: 50%;
+            animation: ringSpin 1.2s linear infinite;
+        }
+        .ring:nth-child(2) { 
+            width: 80%; height: 80%; top: 10%; left: 10%; 
+            border-top: 2px solid #2a6edf; border-right: 2px solid #4a9eff; 
+            animation: ringSpinReverse 1.5s linear infinite; 
+        }
+        @keyframes ringSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes ringSpinReverse { 0% { transform: rotate(360deg); } 100% { transform: rotate(0deg); } }
+
+        /* Chat Modal */
+        .chat-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #07142a;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .chat-header {
+            background: rgba(13, 31, 60, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #4a9eff15;
+        }
+        .chat-header h3 { color: #4a9eff; font-size: 14px; }
+        .close-chat {
+            background: none;
+            border: none;
+            color: #4a9eff;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 0;
+            width: auto;
+        }
+        .close-chat:active { transform: rotate(90deg); }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .chat-message {
+            max-width: 80%;
+            padding: 8px 14px;
+            border-radius: 16px;
+            font-size: 13px;
+            word-wrap: break-word;
+            animation: msgPop 0.3s ease;
+        }
+        @keyframes msgPop {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .chat-message.owner {
+            background: linear-gradient(135deg, #1a2a4a, #0d1f3c);
+            color: #d4e4fc;
+            border-bottom-left-radius: 4px;
+            align-self: flex-start;
+            border: 1px solid #4a9eff15;
+        }
+        .chat-message.user {
+            background: linear-gradient(135deg, #4a9eff, #2a6edf);
+            color: #fff;
+            border-bottom-right-radius: 4px;
+            align-self: flex-end;
+        }
+        .chat-input-area {
+            display: flex;
+            padding: 10px 12px;
+            background: rgba(13, 31, 60, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid #4a9eff15;
+            gap: 8px;
+        }
+        .chat-input-area input {
+            flex: 1;
+            margin: 0;
+            padding: 10px 14px;
+            font-size: 13px;
+            border-radius: 44px;
+            border: 1px solid #4a9eff15;
+            background: rgba(26, 42, 74, 0.4);
+            color: white;
+        }
+        .chat-input-area input:focus { border-color: #4a9eff; outline: none; }
+        .chat-input-area button {
+            width: auto;
+            padding: 10px 18px;
+            margin: 0;
+            border-radius: 44px;
+            background: linear-gradient(135deg, #4a9eff, #2a6edf);
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+        .chat-input-area button:active { transform: scale(0.95); }
+
+        .group-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .group-message {
+            padding: 8px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            max-width: 85%;
+            word-wrap: break-word;
+            animation: msgPop 0.3s ease;
+        }
+        .group-message-owner {
+            background: linear-gradient(135deg, #1a2a4a, #0d1f3c);
+            color: #d4e4fc;
+            align-self: flex-start;
+            border: 1px solid #4a9eff15;
+        }
+        .group-message-other {
+            background: rgba(15, 37, 64, 0.7);
+            color: #d4e4fc;
+            align-self: flex-start;
+            border: 1px solid #4a9eff10;
+        }
+        .group-message-user {
+            background: linear-gradient(135deg, #4a9eff, #2a6edf);
+            color: #fff;
+            align-self: flex-end;
+        }
+        .message-sender {
+            font-size: 9px;
+            font-weight: bold;
+            margin-bottom: 3px;
+            opacity: 0.7;
+        }
+
+        /* Bottom Navigation - AESTHETIC */
+        .bottom-nav {
+            background: rgba(7, 20, 42, 0.95);
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 4px 4px 14px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            gap: 1px;
+            overflow-x: auto;
+            border-top: 1px solid #4a9eff10;
+            z-index: 100;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+            background: none;
+            border: none;
+            color: #4a6a8a;
+            font-size: 8px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+            min-width: 40px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .nav-item .nav-icon {
+            font-size: 18px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .nav-item .nav-label {
+            transition: all 0.3s ease;
+            opacity: 0.5;
+            font-size: 7px;
+        }
+        .nav-item.active {
+            color: #4a9eff;
+            transform: translateY(-3px);
+        }
+        .nav-item.active .nav-icon {
+            transform: scale(1.15) translateY(-2px);
+            text-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
+        }
+        .nav-item.active .nav-label {
+            opacity: 1;
+            font-weight: 600;
+        }
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #4a9eff, transparent);
+            border-radius: 2px;
+            animation: navGlow 2s ease-in-out infinite;
+        }
+        @keyframes navGlow {
+            0%, 100% { opacity: 0.5; width: 16px; }
+            50% { opacity: 1; width: 24px; }
+        }
+        .nav-item:active { transform: scale(0.92); }
+        .nav-item .nav-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #4a9eff;
+            color: #051a2a;
+            font-size: 6px;
+            font-weight: bold;
+            padding: 1px 4px;
+            border-radius: 20px;
+            min-width: 12px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(74, 158, 255, 0.3);
+        }
+
+        .card {
+            background: rgba(13, 31, 60, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            border: 1px solid #4a9eff10;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.4s ease;
+            will-change: transform;
+        }
+        .card:active { transform: scale(0.99); }
+        .card h3, .card h4 { color: #4a9eff; margin-bottom: 6px; font-size: 14px; letter-spacing: 0.5px; }
+
+        input, select, button {
+            width: 100%;
+            padding: 8px 12px;
+            margin: 3px 0;
+            border-radius: 40px;
+            border: none;
+            background: rgba(26, 42, 74, 0.4);
+            color: white;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid #4a9eff10;
+        }
+        input:focus, select:focus {
+            border-color: #4a9eff;
+            outline: none;
+            box-shadow: 0 0 20px rgba(74, 158, 255, 0.05);
+        }
+        button {
+            background: linear-gradient(135deg, #4a9eff, #2a6edf);
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 15px rgba(74, 158, 255, 0.15);
+        }
+        button:active { transform: scale(0.97); }
+        button.danger { background: linear-gradient(135deg, #d32f2f, #b71c1c); box-shadow: 0 4px 15px rgba(211, 47, 47, 0.15); }
+        button.secondary { background: rgba(42, 74, 106, 0.4); box-shadow: none; }
+        button:disabled { opacity: 0.4; cursor: not-allowed; }
+        button.success { background: linear-gradient(135deg, #2e7d32, #1b5e20); }
+        button.warning { background: linear-gradient(135deg, #f57c00, #e65100); }
+
+        /* Gambar - RATIO 4:2 */
+        .gambar-home, .gambar-bug {
+            width: 100%;
+            aspect-ratio: 4 / 2;
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 4px 0 8px 0;
+            border: 1px solid #4a9eff10;
+            background: #000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .gambar-login {
+            width: 100%;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            border: 1px solid #4a9eff10;
+        }
+
+        /* BUG LIST */
+        .bug-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+            margin: 6px 0;
+        }
+        .bug-item {
+            background: rgba(26, 42, 74, 0.35);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            padding: 8px 5px;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            min-height: 42px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .bug-item:active { transform: scale(0.95); }
+        .bug-item.selected {
+            border-color: #4a9eff;
+            background: rgba(26, 58, 106, 0.35);
+            box-shadow: 0 0 20px rgba(74, 158, 255, 0.05);
+            transform: scale(1.02);
+        }
+        .bug-item-name {
+            font-size: 9px;
+            font-weight: 600;
+            color: #d4e4fc;
+            line-height: 1.2;
+        }
+        .bug-item-desc {
+            font-size: 7px;
+            opacity: 0.3;
+            margin-top: 1px;
+            color: #8ab4e0;
+        }
+        .bug-item.selected .bug-item-name { color: #4a9eff; }
+
+        .bug-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 6px 10px;
+            background: rgba(15, 37, 64, 0.35);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid #4a9eff10;
+        }
+        .profile-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a2a4a, #0d1f3c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: 2px solid #4a9eff;
+            margin-right: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 0 20px rgba(74, 158, 255, 0.05);
+        }
+        .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .username-display { font-weight: bold; font-size: 12px; color: #d4e4fc; }
+        .expired-date { font-size: 8px; color: #ff6b6b50; margin-top: 1px; }
+
+        .sender-info {
+            background: rgba(15, 37, 64, 0.35);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 6px 10px;
+            margin: 4px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #4a9eff10;
+        }
+        .sender-label { font-size: 9px; opacity: 0.4; }
+        .sender-value { font-size: 11px; font-weight: 600; color: #4a9eff; }
+
+        .send-btn {
+            background: linear-gradient(135deg, #4a9eff, #2a6edf);
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 10px;
+            margin-top: 3px;
+            border-radius: 50px;
+            box-shadow: 0 4px 20px rgba(74, 158, 255, 0.2);
+        }
+
+        .alert-success {
+            background: rgba(74, 158, 255, 0.08);
+            border: 1px solid #4a9eff15;
+            padding: 6px 10px;
+            border-radius: 10px;
+            margin: 4px 0;
+            text-align: center;
+            font-size: 11px;
+            word-break: break-word;
+            color: #8ab4e0;
+        }
+        .alert-danger {
+            background: rgba(211, 47, 47, 0.08);
+            border: 1px solid #d32f2f15;
+            padding: 6px 10px;
+            border-radius: 10px;
+            margin: 4px 0;
+            text-align: center;
+            font-size: 11px;
+            word-break: break-word;
+            color: #ff6b6b;
+        }
+
+        .sender-list, .user-list { max-height: 180px; overflow-y: auto; }
+        .sender-item, .user-item {
+            background: rgba(15, 37, 64, 0.35);
+            border-radius: 8px;
+            padding: 6px 8px;
+            margin-bottom: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            border: 1px solid #4a9eff10;
+        }
+        .sender-actions { display: flex; gap: 3px; }
+        .sender-actions button { width: auto; padding: 2px 6px; margin: 0; font-size: 8px; }
+
+        .tools-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .tool-btn {
+            background: rgba(26, 42, 74, 0.25);
+            backdrop-filter: blur(5px);
+            border-radius: 60px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            border: 1px solid #4a9eff10;
+            transition: all 0.3s ease;
+        }
+        .tool-btn:active { transform: scale(0.98); }
+        .tool-icon { font-size: 18px; }
+        .tool-info { flex: 1; }
+        .tool-title { font-weight: bold; font-size: 11px; }
+        .tool-desc { font-size: 7px; opacity: 0.3; }
+
+        .sholat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            margin-top: 6px;
+        }
+        .sholat-item {
+            background: rgba(15, 37, 64, 0.35);
+            border-radius: 8px;
+            padding: 5px;
+            text-align: center;
+            border: 1px solid #4a9eff10;
+        }
+        .sholat-time { font-size: 11px; font-weight: bold; color: #4a9eff; }
+
+        .anime-header { text-align: center; margin-bottom: 8px; }
+        .anime-search-area { margin-bottom: 8px; }
+        .anime-list { max-height: 300px; overflow-y: auto; }
+        .anime-card {
+            background: rgba(15, 37, 64, 0.35);
+            border-radius: 8px;
+            padding: 6px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            border: 1px solid #4a9eff10;
+            display: flex;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+        .anime-card:active { transform: scale(0.98); }
+        .anime-img {
+            width: 40px;
+            height: 56px;
+            background: rgba(26, 42, 74, 0.35);
+            border-radius: 6px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .anime-img img { width: 100%; height: 100%; object-fit: cover; }
+        .anime-info { flex: 1; }
+        .anime-title { font-weight: bold; font-size: 11px; }
+        .anime-detail { font-size: 8px; opacity: 0.4; }
+        .episode-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3px;
+            max-height: 160px;
+            overflow-y: auto;
+            margin-top: 4px;
+        }
+        .episode-btn {
+            background: rgba(26, 42, 74, 0.35);
+            border-radius: 40px;
+            padding: 3px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 8px;
+            border: 1px solid #4a9eff10;
+            transition: all 0.3s ease;
+        }
+        .episode-btn:active { transform: scale(0.95); }
+        .episode-btn.selected { background: #4a9eff; color: #051a2a; border-color: #4a9eff; }
+        
+        /* Full Screen Video Player */
+        .anime-player-full {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #000;
+            z-index: 5000;
+            display: flex;
+            flex-direction: column;
+            max-width: 450px;
+            margin: 0 auto;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .anime-player-full .player-header {
+            background: rgba(0,0,0,0.95);
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+            border-bottom: 1px solid #4a9eff15;
+        }
+        .anime-player-full .player-header .back-btn {
+            background: none;
+            border: none;
+            color: #4a9eff;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px 6px;
+            width: auto;
+        }
+        .anime-player-full .player-header .back-btn:active { transform: scale(0.8); }
+        .anime-player-full .player-header .player-title {
+            color: #d4e4fc;
+            font-size: 11px;
+            font-weight: 600;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .anime-player-full .player-body {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            position: relative;
+        }
+        .anime-player-full .player-body iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .anime-player-full .player-controls {
+            background: rgba(0,0,0,0.95);
+            padding: 6px 10px;
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            justify-content: center;
+            border-top: 1px solid #4a9eff15;
+            max-height: 80px;
+            overflow-y: auto;
+        }
+        .anime-player-full .player-controls .ep-mini-btn {
+            background: rgba(26, 42, 74, 0.35);
+            border: 1px solid #4a9eff10;
+            color: #8ab4e0;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 8px;
+            cursor: pointer;
+            width: auto;
+            transition: all 0.3s ease;
+        }
+        .anime-player-full .player-controls .ep-mini-btn:active { transform: scale(0.92); }
+        .anime-player-full .player-controls .ep-mini-btn.active {
+            background: #4a9eff;
+            color: #051a2a;
+            border-color: #4a9eff;
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid rgba(26, 42, 74, 0.3);
+            border-top: 2px solid #4a9eff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 6px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Quran */
+        .surah-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 3px;
+        }
+        .surah-item {
+            background: rgba(15, 37, 64, 0.35);
+            border-radius: 6px;
+            padding: 4px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border: 1px solid #4a9eff10;
+            transition: all 0.3s ease;
+        }
+        .surah-item:active { transform: scale(0.98); }
+        .surah-number { font-size: 9px; color: #4a9eff; width: 22px; font-weight: bold; text-align: center; }
+        .surah-name { flex: 1; font-weight: bold; font-size: 11px; padding: 0 4px; }
+        .surah-name-id { font-size: 8px; opacity: 0.3; }
+        .surah-info { font-size: 7px; opacity: 0.2; text-align: right; }
+        
+        .ayat-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 3px;
+        }
+        .ayat-card {
+            background: rgba(10, 26, 48, 0.35);
+            border-radius: 8px;
+            padding: 8px 10px;
+            border-right: 3px solid #4a9eff;
+            transition: all 0.3s ease;
+        }
+        .ayat-card:active { transform: scale(0.99); }
+        .ayat-number { font-size: 9px; color: #4a9eff; margin-bottom: 3px; font-weight: bold; display: inline-block; background: rgba(74, 158, 255, 0.06); padding: 0 6px; border-radius: 10px; }
+        .ayat-arabic { font-size: 18px; line-height: 1.6; text-align: right; font-family: 'Amiri', 'Times New Roman', serif; margin: 3px 0 4px 0; color: #e8f0fc; }
+        .ayat-latin { font-size: 11px; color: #b0cce0; margin-bottom: 3px; font-style: italic; }
+        .ayat-arti { font-size: 10px; color: #8ab4e0; border-top: 1px solid #4a9eff10; padding-top: 4px; margin-top: 3px; }
+
+        .role-indicator {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3px 8px;
+            background: rgba(6, 18, 42, 0.35);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            margin: 3px 6px;
+            flex-wrap: wrap;
+            gap: 3px;
+            border: 1px solid #4a9eff10;
+        }
+        .badge {
+            background: rgba(74, 158, 255, 0.06);
+            padding: 2px 8px;
+            border-radius: 30px;
+            font-size: 8px;
+            border-left: 2px solid #4a9eff;
+            color: #8ab4e0;
+        }
+
+        .developer-footer {
+            text-align: center;
+            padding: 6px 0;
+            font-size: 7px;
+            color: #4a9eff15;
+            border-top: 1px solid #4a9eff05;
+            margin-top: 3px;
+            letter-spacing: 2px;
+        }
+        .developer-footer span { font-weight: bold; color: #4a9eff30; }
+
+        .info-card {
+            background: rgba(15, 37, 64, 0.35);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border: 1px solid #4a9eff10;
+            text-align: center;
+        }
+        .info-title { color: #4a9eff; font-size: 14px; margin-bottom: 8px; font-weight: bold; }
+        .info-text { font-size: 10px; line-height: 1.6; text-align: left; color: #c8e0fc; }
+        .info-divider { height: 1px; background: #4a9eff10; margin: 8px 0; }
+        .info-label { color: #4a9eff; font-weight: bold; }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .avatar-option {
+            display: inline-block;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(26, 42, 74, 0.35);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin: 2px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .avatar-option:active { transform: scale(0.9); }
+        .avatar-option.selected { border-color: #4a9eff; transform: scale(1.05); }
+
+        .file-input-label {
+            background: linear-gradient(135deg, #4a9eff, #2a6edf);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 44px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            display: inline-block;
+            width: 100%;
+            margin: 3px 0;
+            font-size: 11px;
+            transition: all 0.3s ease;
+        }
+        .file-input-label:active { transform: scale(0.97); }
+        .file-input-label input { display: none; }
+        .avatar-preview {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(26, 42, 74, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            border: 2px solid #4a9eff;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(74, 158, 255, 0.05);
+        }
+        .avatar-preview span { font-size: 30px; }
+
+        input[type="date"] { color-scheme: dark; }
+        .date-note { font-size: 8px; color: #4a9eff20; margin-top: 2px; }
+
+        .overlay-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 4000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        .overlay-card {
+            background: rgba(13, 31, 60, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 16px;
+            text-align: center;
+            width: 85%;
+            max-width: 280px;
+            border: 1px solid #4a9eff20;
+            box-shadow: 0 0 60px rgba(74, 158, 255, 0.05);
+            animation: scaleIn 0.3s ease;
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .overlay-video video {
+            width: 100%;
+            aspect-ratio: 4 / 2;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid #4a9eff15;
+            margin-bottom: 10px;
+        }
+        .overlay-loading-text {
+            font-size: 12px;
+            color: #4a9eff;
+            letter-spacing: 4px;
+            animation: blink 1.5s ease-in-out infinite;
+        }
+        .overlay-checkmark {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a9eff, #2a6edf);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 6px;
+            box-shadow: 0 0 30px rgba(74, 158, 255, 0.15);
+        }
+        .overlay-checkmark span { font-size: 26px; color: #fff; }
+        .overlay-done-text { font-size: 15px; font-weight: bold; color: #4a9eff; letter-spacing: 3px; }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
+            .bottom-nav { padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
+        }
+
+        .bug-target-input { font-size: 11px; padding: 8px 12px; margin: 2px 0 4px 0; }
+
+        .chat-list { flex: 1; overflow-y: auto; padding: 8px; }
+        .chat-room-item {
+            background: rgba(15, 37, 64, 0.35);
+            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            border: 1px solid #4a9eff10;
+            transition: all 0.3s ease;
+        }
+        .chat-room-item:active { transform: scale(0.98); }
+
+        .copyright {
+            text-align: center;
+            font-size: 8px;
+            color: #4a9eff15;
+            padding: 3px 0;
+            letter-spacing: 2px;
+        }
+        .copyright span { color: #4a9eff25; font-weight: bold; }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 2;
+            border-radius: 12px;
+            margin: 4px 0 8px 0;
+            border: 1px solid #4a9eff10;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* RAT STYLES */
+        .rat-container { padding: 3px 0; }
+        .rat-victim-card {
+            background: rgba(15, 37, 64, 0.35);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 8px;
+            border: 1px solid #4a9eff10;
+        }
+        .rat-victim-card .victim-name { font-size: 13px; font-weight: bold; color: #d4e4fc; }
+        .rat-victim-card .victim-device { font-size: 9px; color: #6e9fca; margin-top: 1px; }
+        .rat-victim-card .victim-status { font-size: 9px; color: #4caf50; margin-top: 2px; }
+        .rat-victim-card .victim-status.offline { color: #ff6b6b; }
+        
+        .rat-control-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 5px;
+            margin: 6px 0;
+        }
+        .rat-control-btn {
+            background: rgba(26, 42, 74, 0.25);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            padding: 8px 4px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #4a9eff10;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: #d4e4fc;
+        }
+        .rat-control-btn:active { transform: scale(0.92); }
+        .rat-control-btn .ctrl-icon { font-size: 20px; display: block; margin-bottom: 2px; }
+        .rat-control-btn .ctrl-name { font-size: 8px; font-weight: 500; opacity: 0.5; }
+        .rat-control-btn.danger { border-color: #d32f2f20; }
+        .rat-control-btn.danger:active { background: rgba(211, 47, 47, 0.1); }
+        .rat-control-btn.success { border-color: #2e7d3220; }
+        .rat-control-btn.success:active { background: rgba(46, 125, 50, 0.1); }
+        .rat-control-btn.warning { border-color: #f57c0020; }
+        .rat-control-btn.warning:active { background: rgba(245, 124, 0, 0.1); }
+
+        .rat-akun-list { max-height: 180px; overflow-y: auto; }
+        .rat-akun-item {
+            background: rgba(10, 26, 48, 0.35);
+            border-radius: 6px;
+            padding: 6px 8px;
+            margin-bottom: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 3px solid #4a9eff;
+        }
+        .rat-akun-item .akun-platform { font-weight: 600; font-size: 10px; color: #d4e4fc; }
+        .rat-akun-item .akun-email { font-size: 9px; color: #6e9fca; }
+        .rat-akun-item .akun-status { font-size: 7px; padding: 1px 6px; border-radius: 20px; background: rgba(46, 125, 50, 0.12); color: #4caf50; }
+
+        .rat-notif-item {
+            background: rgba(10, 26, 48, 0.35);
+            border-radius: 6px;
+            padding: 6px 8px;
+            margin-bottom: 3px;
+            border-left: 3px solid #f57c00;
+        }
+        .rat-notif-item .notif-app { font-size: 8px; color: #4a9eff; font-weight: 600; }
+        .rat-notif-item .notif-text { font-size: 10px; color: #d4e4fc; margin-top: 1px; }
+        .rat-notif-item .notif-time { font-size: 7px; color: #6e9fca20; margin-top: 1px; }
+
+        .rat-victim-select {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin: 4px 0;
+        }
+        .rat-victim-select .victim-chip {
+            background: rgba(26, 42, 74, 0.25);
+            backdrop-filter: blur(5px);
+            border-radius: 30px;
+            padding: 3px 10px;
+            font-size: 9px;
+            cursor: pointer;
+            border: 1px solid #4a9eff10;
+            color: #6e9fca;
+            transition: all 0.3s ease;
+        }
+        .rat-victim-select .victim-chip:active { transform: scale(0.92); }
+        .rat-victim-select .victim-chip.active { 
+            background: rgba(74, 158, 255, 0.08);
+            color: #4a9eff;
+            border-color: #4a9eff;
+        }
+
+        .rat-status-bar {
+            background: rgba(15, 37, 64, 0.35);
+            border-radius: 8px;
+            padding: 4px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            border: 1px solid #4a9eff10;
+        }
+        .rat-status-bar .status-label { font-size: 8px; color: #6e9fca; opacity: 0.4; }
+        .rat-status-bar .status-value { font-size: 10px; font-weight: 600; color: #4caf50; }
+        .rat-status-bar .status-value.offline { color: #ff6b6b; }
+        
+        .rat-add-victim {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+        .rat-add-victim input {
+            flex: 1;
+            min-width: 80px;
+            padding: 6px 10px;
+            font-size: 10px;
+            margin: 0;
+        }
+        .rat-add-victim button {
+            width: auto;
+            padding: 6px 14px;
+            font-size: 10px;
+            margin: 0;
+        }
+
+        /* RANSOMWARE OVERLAY */
+        .ransomware-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(20px);
+            z-index: 7000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+            max-width: 450px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease;
+        }
+        .ransomware-overlay .ransom-icon {
+            font-size: 56px;
+            margin-bottom: 12px;
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        .ransomware-overlay .ransom-title {
+            color: #ff1744;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            letter-spacing: 3px;
+            text-shadow: 0 0 30px rgba(255, 23, 68, 0.3);
+        }
+        .ransomware-overlay .ransom-subtitle {
+            color: #8ab4e0;
+            font-size: 12px;
+            margin-bottom: 12px;
+            opacity: 0.6;
+            text-align: center;
+        }
+        .ransomware-overlay .ransom-victim {
+            color: #4a9eff;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .ransomware-overlay .ransom-device {
+            color: #6e9fca;
+            font-size: 11px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        .ransomware-overlay .ransom-box {
+            background: rgba(255, 23, 68, 0.05);
+            border: 1px solid #ff174430;
+            border-radius: 12px;
+            padding: 14px 16px;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 16px;
+        }
+        .ransomware-overlay .ransom-box .ransom-label {
+            color: #8ab4e0;
+            font-size: 10px;
+            opacity: 0.5;
+            letter-spacing: 2px;
+        }
+        .ransomware-overlay .ransom-box .ransom-code {
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            margin-top: 4px;
+            font-family: monospace;
+        }
+        .ransomware-overlay .ransom-box .ransom-amount {
+            color: #ff1744;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+        .ransomware-overlay .ransom-status {
+            color: #4caf50;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 8px;
+            animation: blink 1.5s ease-in-out infinite;
+        }
+        .ransomware-overlay .ransom-close-btn {
+            position: absolute;
+            top: 40px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: #6e9fca;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 6px;
+            width: auto;
+            transition: all 0.3s ease;
+        }
+        .ransomware-overlay .ransom-close-btn:active { transform: rotate(90deg) scale(0.9); }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js">
+    </script>
+</head>
+<body>
+    <div class="app-container" id="app"></div>
+
+    <script>
+        // ==================== DATABASE ====================
+        let usersDB = [
+            { id: 1, username: "WibuMaster", password: "wibu123", role: "owner", createdBy: "system", duration: "permanen",
+                expiredDate: null, avatar: "👑" },
+            { id: 2, username: "otaku_sejati", password: "otaku123", role: "tangan_kanan", createdBy: "WibuMaster",
+                duration: "permanen", expiredDate: null, avatar: "🤝" },
+            { id: 3, username: "weeb_king", password: "weeb123", role: "vip", createdBy: "WibuMaster", duration: "30 hari",
+                expiredDate: "2025-06-20", avatar: "⭐" },
+            { id: 4, username: "anime_lover", password: "anime123", role: "member", createdBy: "WibuMaster",
+                duration: "7 hari", expiredDate: "2025-05-20", avatar: "👤" },
+            { id: 5, username: "reseller_anime", password: "reseller123", role: "reseller", createdBy: "WibuMaster",
+                duration: "permanen", expiredDate: null, avatar: "📦" }
+        ];
+        let nextId = 6;
+        let sendersDB = [
+            { id: 1, nomor: "6281234567890", nama: "Sender Utama", aktif: true },
+            { id: 2, nomor: "6289876543210", nama: "Sender Backup", aktif: true }
+        ];
+        let nextSenderId = 3;
+        let currentUser = null;
+        let showVideoSplash = false;
+
+        const avatarOptions = ["👑", "🤝", "⭐", "👤", "📦", "😀", "😎", "🥷", "🦸", "🐱", "🐶", "🦊", "🐼", "🌸", "🌟", "💎", "⚡",
+            "🔥", "💧", "🌿"
+        ];
+
+        // ==================== EXPIRED DATE FUNCTIONS ====================
+        function isExpired(expiredDate) {
+            if (!expiredDate) return false;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const expired = new Date(expiredDate);
+            expired.setHours(0, 0, 0, 0);
+            return expired < today;
+        }
+
+        function formatDateForDisplay(dateString) {
+            if (!dateString) return "-";
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return "-";
+            return `${date.getDate().toString().padStart(2,'0')}-${(date.getMonth()+1).toString().padStart(2,'0')}-${date.getFullYear()}`;
+        }
+
+        function checkAndDeleteExpiredAccounts() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            usersDB = usersDB.filter(user => {
+                if (user.expiredDate) {
+                    const expired = new Date(user.expiredDate);
+                    expired.setHours(0, 0, 0, 0);
+                    if (expired < today) return false;
+                }
+                return true;
+            });
+            if (currentUser && isExpired(currentUser.expiredDate)) {
+                currentUser = null;
+                return true;
+            }
+            return false;
+        }
+
+        setInterval(() => {
+            const needRedirect = checkAndDeleteExpiredAccounts();
+            if (needRedirect && window.app && window.app.currentView !== 'landing') {
+                window.app.currentView = 'landing';
+                window.app.$forceUpdate();
+            }
+        }, 60000);
+
+        // ==================== CHAT SYSTEM ====================
+        let privateChats = [];
+        let groupMessages = [];
+
+        function initGroupChat() {
+            if (groupMessages.length === 0) {
+                groupMessages.push({ from: "system", role: "system", text: "Selamat datang di GRUB WIBU BUG! Semua wibu bisa chat di sini.",
+                    time: new Date() });
+                groupMessages.push({ from: "WibuMaster", role: "owner", text: "Selamat datang para wibu! Selamat bergabung di grub WIBU BUG",
+                    time: new Date() });
+            }
+        }
+        initGroupChat();
+
+        function getOrCreatePrivateChat(userId, username) {
+            let chat = privateChats.find(c => c.userId === userId);
+            if (!chat) {
+                chat = {
+                    userId: userId,
+                    username: username,
+                    messages: [{ from: "owner", text: "Halo Wibu! Ada yang bisa saya bantu? Silakan tanyakan tentang akses WIBU BUG",
+                        time: new Date() }]
+                };
+                privateChats.push(chat);
+            }
+            return chat;
+        }
+
+        let guestChatMessages = [
+            { from: "owner", text: "Wahai para wibu! Selamat datang di WIBU BUG. Ada yang bisa dibantu?", time: new Date() }
+        ];
+
+        // ==================== 10 MODE BUG ====================
+        const bugModes = [
+            { name: "Invis Force Close", desc: "Force close tidak terlihat" },
+            { name: "Crash Delay", desc: "Crash dengan delay" },
+            { name: "Crash Invis", desc: "Crash tidak terlihat" },
+            { name: "Blank Python", desc: "Python kosong" },
+            { name: "Blank DC Update", desc: "DC update kosong" },
+            { name: "Super Delay", desc: "Delay super lama" },
+            { name: "Suxrat V13", desc: "Bug Suxrat V13" },
+            { name: "Wibu Bug V18", desc: "Bug andalan Wibu" },
+            { name: "Buldozer", desc: "Penghancur WA, gak bisa masuk WA" },
+            { name: "Napolly", desc: "WhatsApp diserang banyak nomor, crash lalu HP mati" }
+        ];
+
+        // ==================== DATA VICTIM RAT ====================
+        let ratVictims = [
+            { id: 1, name: "Budi Santoso", device: "Samsung Galaxy S21", online: true, ip: "192.168.1.100" },
+            { id: 2, name: "Ani Wijaya", device: "iPhone 13 Pro", online: false, ip: "192.168.1.101" },
+            { id: 3, name: "Joko Widodo", device: "Xiaomi Mi 11", online: true, ip: "192.168.1.102" }
+        ];
+        let nextVictimId = 4;
+        let selectedVictimId = 1;
+
+        // ==================== RAT DATA ====================
+        const ratAccounts = {
+            1: [
+                { platform: "WhatsApp", email: "budi@wa.com", status: "Aktif" },
+                { platform: "Instagram", email: "budi_ig", status: "Aktif" },
+                { platform: "Facebook", email: "budi.fb", status: "Tidak Aktif" }
+            ],
+            2: [
+                { platform: "WhatsApp", email: "ani@wa.com", status: "Aktif" },
+                { platform: "Twitter", email: "ani_twt", status: "Aktif" }
+            ],
+            3: [
+                { platform: "WhatsApp", email: "joko@wa.com", status: "Aktif" },
+                { platform: "Instagram", email: "joko_ig", status: "Aktif" },
+                { platform: "Facebook", email: "joko.fb", status: "Aktif" },
+                { platform: "Twitter", email: "joko_twt", status: "Aktif" },
+                { platform: "Telegram", email: "joko_tg", status: "Aktif" }
+            ]
+        };
+
+        const ratNotifications = {
+            1: [
+                { app: "WhatsApp", text: "Pesan dari Ibu: 'Kapan pulang?'", time: "10 menit lalu" },
+                { app: "Instagram", text: "Like dari @budi_santoso", time: "25 menit lalu" },
+                { app: "Facebook", text: "Andi membalas komentar Anda", time: "1 jam lalu" }
+            ],
+            2: [
+                { app: "WhatsApp", text: "Pesan dari Bos: 'Rapat jam 3'", time: "5 menit lalu" },
+                { app: "Twitter", text: "RT dari @anime_fans", time: "30 menit lalu" }
+            ],
+            3: [
+                { app: "WhatsApp", text: "Pesan dari Istri: 'Jangan lupa beli susu'", time: "2 menit lalu" },
+                { app: "Instagram", text: "Story baru dari @joko_ig", time: "15 menit lalu" },
+                { app: "Facebook", text: "Notifikasi dari Grup Keluarga", time: "45 menit lalu" },
+                { app: "Telegram", text: "Pesan dari @boss: 'Siapkan laporan'", time: "1 jam lalu" }
+            ]
+        };
+
+        // ==================== RANSOMWARE DATA ====================
+        let ransomwareTargets = [];
+
+        // ==================== LANDING PAGE ====================
+        Vue.component('landing-page', {
+            template: `
+                    <div class="landing-container">
+                        <div class="logo-area">
+                            <div class="landing-img">
+                                <img src="MFG.png" onerror="this.src='https://placehold.co/150x150/1a2a4a/4a9eff?text=MFG'">
+                            </div>
+                            <h1>WIBU BUG</h1>
+                            <p>✦ PREMIUM EDITION ✦</p>
+                        </div>
+                        <div class="button-group">
+                            <button class="landing-btn btn-get" @click="getAccess">GET ACCESS</button>
+                            <button class="landing-btn btn-login" @click="goToLogin">LOGIN</button>
+                        </div>
+                        <div class="footer-text">DEVELOPED BY ZUMA GRUB</div>
+                    </div>
+                `,
+            methods: {
+                getAccess() { this.$emit('get-access'); },
+                goToLogin() { this.$emit('go-to-login'); }
+            }
+        });
+
+        // ==================== CHAT GUEST ====================
+        Vue.component('chat-guest', {
+            template: `
+                    <div class="chat-modal">
+                        <div class="chat-header">
+                            <h3>Chat dengan Owner - WibuMaster</h3>
+                            <button class="close-chat" @click="closeChat">✕</button>
+                        </div>
+                        <div class="chat-messages" ref="chatMessages">
+                            <div v-for="(msg, idx) in messages" :key="idx" :class="['chat-message', msg.from === 'owner' ? 'owner' : 'user']">
+                                <strong>{{ msg.from === 'owner' ? 'Owner' : 'Anda' }}:</strong> {{ msg.text }}
+                                <div style="font-size:9px; opacity:0.4;">{{ formatTime(msg.time) }}</div>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" v-model="newMessage" placeholder="Tulis pesan ke Owner..." @keyup.enter="sendMessage">
+                            <button @click="sendMessage">Kirim</button>
+                        </div>
+                    </div>
+                `,
+            data() { return { messages: guestChatMessages, newMessage: "" } },
+            mounted() { this.scrollToBottom(); },
+            methods: {
+                formatTime(date) { if (!date) return ""; const d = new Date(date);
+                    return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`; },
+                scrollToBottom() { this.$nextTick(() => { if (this.$refs.chatMessages) { this.$refs.chatMessages.scrollTop =
+                            this.$refs.chatMessages.scrollHeight; } }); },
+                sendMessage() {
+                    if (!this.newMessage.trim()) return;
+                    this.messages.push({ from: "user", text: this.newMessage, time: new Date() });
+                    this.scrollToBottom();
+                    this.newMessage = "";
+                    setTimeout(() => {
+                        this.messages.push({ from: "owner",
+                            text: "Sabar owner lagi marathon anime, nanti dibalas ya! Terima kasih wibu!",
+                            time: new Date() });
+                        this.scrollToBottom();
+                    }, 1500);
+                },
+                closeChat() { this.$emit('close'); }
+            },
+            updated() { this.scrollToBottom(); }
+        });
+
+        // ==================== LOGIN PAGE ====================
+        Vue.component('login-page', {
+            template: `
+                    <div style="display:flex; flex-direction:column; height:100%;">
+                        <div class="main-content">
+                            <div class="card" style="text-align:center">
+                                <img src="MFG.png" class="gambar-login" onerror="this.src='https://placehold.co/400x200/1a2a4a/4a9eff?text=MFG'">
+                                <h2 style="color:#4a9eff; font-size:20px; letter-spacing:2px;">WIBU BUG</h2>
+                                <p style="margin-bottom:14px; opacity:0.3; font-size:10px;">✦ PREMIUM EDITION ✦</p>
+                                <input type="text" v-model="username" placeholder="Username">
+                                <input type="password" v-model="password" placeholder="Password">
+                                <button @click="login">MASUK</button>
+                            </div>
+                        </div>
+                        <div class="login-footer" style="text-align:center; padding:8px; font-size:8px; opacity:0.15; letter-spacing:2px;">DEVELOPED BY ZUMA GRUB</div>
+                    </div>
+                `,
+            data() { return { username: '', password: '' } },
+            methods: {
+                login() {
+                    const user = usersDB.find(u => u.username === this.username && u.password === this.password);
+                    if (user) {
+                        if (isExpired(user.expiredDate)) {
+                            alert("Akun Anda telah kedaluwarsa!");
+                            return;
+                        }
+                        currentUser = { ...user };
+                        showVideoSplash = true;
+                        this.$root.currentView = 'video-splash';
+                    } else { alert("Login gagal!"); }
+                }
+            }
+        });
+
+        // ==================== VIDEO SPLASH ====================
+        Vue.component('video-splash', {
+            template: `
+                    <div class="video-splash">
+                        <video ref="videoPlayer" autoplay muted playsinline>
+                            <source src="ZAR.mp4" type="video/mp4">
+                            Browser tidak support video tag
+                        </video>
+                        <div class="loading-container">
+                            <div class="loading-ring"><div class="ring"></div><div class="ring"></div></div>
+                        </div>
+                        <button class="skip-btn" @click="skipVideo">LEWATI</button>
+                    </div>
+                `,
+            mounted() {
+                const video = this.$refs.videoPlayer;
+                if (video) {
+                    video.play().catch(e => console.log("Video error, auto skip"));
+                    setTimeout(() => { if (video) video.muted = false; }, 100);
+                }
+                this.autoSkipTimer = setTimeout(() => { this.finishSplash(); }, 21000);
+            },
+            beforeDestroy() { if (this.autoSkipTimer) clearTimeout(this.autoSkipTimer); },
+            methods: {
+                skipVideo() { if (this.autoSkipTimer) clearTimeout(this.autoSkipTimer);
+                    this.finishSplash(); },
+                finishSplash() { showVideoSplash = false;
+                    this.$root.currentView = 'main-app'; }
+            }
+        });
+
+        // ==================== GROUP CHAT ====================
+        Vue.component('group-chat', {
+            template: `
+                    <div class="chat-modal">
+                        <div class="chat-header">
+                            <h3>GRUB WIBU BUG - Semua Wibu</h3>
+                            <button class="close-chat" @click="closeChat">✕</button>
+                        </div>
+                        <div class="group-chat-messages" ref="groupMessages">
+                            <div v-for="(msg, idx) in groupMessages" :key="idx" :class="['group-message', getMessageClass(msg)]">
+                                <div class="message-sender">{{ msg.from === currentUser.username ? 'Anda' : msg.from }} <span style="font-size:7px; opacity:0.3;">({{ getRoleName(msg.role) }})</span></div>
+                                <div>{{ msg.text }}</div>
+                                <div style="font-size:7px; opacity:0.2;">{{ formatTime(msg.time) }}</div>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" v-model="newMessage" placeholder="Pesan ke grub..." @keyup.enter="sendMessage">
+                            <button @click="sendMessage">Kirim ke Grub</button>
+                        </div>
+                    </div>
+                `,
+            data() { return { groupMessages: groupMessages, newMessage: "" } },
+            computed: { currentUser() { return currentUser } },
+            methods: {
+                formatTime(date) { if (!date) return ""; const d = new Date(date);
+                    return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`; },
+                getRoleName(role) { const names = { owner: "OWNER", tangan_kanan: "TANGAN KANAN", reseller: "RESELLER",
+                        vip: "VIP", member: "MEMBER", system: "SYSTEM" }; return names[role] || role; },
+                getMessageClass(msg) { if (msg.from === currentUser.username) return 'group-message-user'; if (msg.from ===
+                        'WibuMaster' || msg.role === 'owner') return 'group-message-owner'; return 'group-message-other'; },
+                scrollToBottom() { this.$nextTick(() => { if (this.$refs.groupMessages) { this.$refs.groupMessages.scrollTop =
+                            this.$refs.groupMessages.scrollHeight; } }); },
+                sendMessage() { if (!this.newMessage.trim()) return;
+                    groupMessages.push({ from: currentUser.username, role: currentUser.role, text: this.newMessage,
+                        time: new Date() });
+                    this.newMessage = "";
+                    this.scrollToBottom(); },
+                closeChat() { this.$emit('close'); }
+            },
+            updated() { this.scrollToBottom(); }
+        });
+
+        // ==================== PRIVATE CHAT ====================
+        Vue.component('chat-private', {
+            template: `
+                    <div class="chat-modal">
+                        <div class="chat-header">
+                            <h3>Chat dengan Owner - WibuMaster</h3>
+                            <button class="close-chat" @click="closeChat">✕</button>
+                        </div>
+                        <div class="chat-messages" ref="chatMessages">
+                            <div v-for="(msg, idx) in messages" :key="idx" :class="['chat-message', msg.from === 'owner' ? 'owner' : 'user']">
+                                <strong>{{ msg.from === 'owner' ? 'Owner' : 'Anda' }}:</strong> {{ msg.text }}
+                                <div style="font-size:9px; opacity:0.4;">{{ formatTime(msg.time) }}</div>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" v-model="newMessage" placeholder="Tulis pesan ke Owner..." @keyup.enter="sendMessage">
+                            <button @click="sendMessage">Kirim</button>
+                        </div>
+                    </div>
+                `,
+            data() { return { messages: [], newMessage: "" } },
+            mounted() { const chat = getOrCreatePrivateChat(currentUser.id, currentUser.username);
+                this.messages = chat.messages;
+                this.scrollToBottom(); },
+            methods: {
+                formatTime(date) { if (!date) return ""; const d = new Date(date);
+                    return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`; },
+                scrollToBottom() { this.$nextTick(() => { if (this.$refs.chatMessages) { this.$refs.chatMessages.scrollTop =
+                            this.$refs.chatMessages.scrollHeight; } }); },
+                sendMessage() { if (!this.newMessage.trim()) return; const chat = getOrCreatePrivateChat(currentUser.id,
+                        currentUser.username);
+                    chat.messages.push({ from: "user", text: this.newMessage, time: new Date() });
+                    this.messages = chat.messages;
+                    this.newMessage = "";
+                    this.scrollToBottom();
+                    setTimeout(() => { const chatAfter = getOrCreatePrivateChat(currentUser.id, currentUser.username);
+                        chatAfter.messages.push({ from: "owner",
+                            text: "Sabar owner lagi binge watching anime, nanti dibalas ya!", time: new Date() });
+                        this.messages = chatAfter.messages;
+                        this.scrollToBottom(); }, 1500); },
+                closeChat() { this.$emit('close'); }
+            },
+            updated() { this.scrollToBottom(); }
+        });
+
+        // ==================== OWNER CHAT DASHBOARD ====================
+        Vue.component('chat-owner-dashboard', {
+            template: `
+                    <div class="chat-modal">
+                        <div class="chat-header">
+                            <h3>DASHBOARD CHAT - Owner WibuMaster</h3>
+                            <button class="close-chat" @click="closeChat">✕</button>
+                        </div>
+                        <div class="chat-list" v-if="!selectedChat">
+                            <div v-for="chat in privateChats" :key="chat.userId" class="chat-room-item" @click="selectChat(chat)">
+                                <div style="font-size:11px; font-weight:600;">{{ chat.username }}</div>
+                                <div style="font-size:8px; opacity:0.3;">{{ getLastMessage(chat) }}</div>
+                            </div>
+                            <div v-if="privateChats.length === 0" style="text-align:center; padding:12px; opacity:0.3; font-size:11px;">Belum ada chat dari wibu</div>
+                        </div>
+                        <div v-if="selectedChat" style="display:flex; flex-direction:column; height:100%;">
+                            <div style="padding:10px 14px; background:rgba(13,31,60,0.95); border-bottom:1px solid #4a9eff15; display:flex; justify-content:space-between; align-items:center;">
+                                <h4 style="color:#4a9eff; font-size:13px;">Chat dengan: {{ selectedChat.username }}</h4>
+                                <button class="secondary" style="width:auto; padding:3px 8px; font-size:9px;" @click="selectedChat = null">Kembali</button>
+                            </div>
+                            <div class="chat-messages" ref="chatMessages" style="flex:1; overflow-y:auto; padding:10px;">
+                                <div v-for="(msg, idx) in selectedChat.messages" :key="idx" :class="['chat-message', msg.from === 'owner' ? 'owner' : 'user']">
+                                    <strong>{{ msg.from === 'owner' ? 'Owner (Anda)' : selectedChat.username }}:</strong> {{ msg.text }}
+                                    <div style="font-size:8px; opacity:0.3;">{{ formatTime(msg.time) }}</div>
+                                </div>
+                            </div>
+                            <div class="chat-input-area">
+                                <input type="text" v-model="newMessage" placeholder="Ketik balasan..." @keyup.enter="sendMessage">
+                                <button @click="sendMessage">Kirim Balasan</button>
+                            </div>
+                        </div>
+                    </div>
+                `,
+            data() { return { privateChats: privateChats, selectedChat: null, newMessage: "" } },
+            methods: {
+                formatTime(date) { if (!date) return ""; const d = new Date(date);
+                    return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`; },
+                getLastMessage(chat) { const lastMsg = chat.messages[chat.messages.length - 1]; return lastMsg ? lastMsg.text
+                        .substring(0, 40) : "Tidak ada pesan"; },
+                scrollToBottom() { this.$nextTick(() => { if (this.$refs.chatMessages) { this.$refs.chatMessages.scrollTop =
+                            this.$refs.chatMessages.scrollHeight; } }); },
+                selectChat(chat) { this.selectedChat = chat;
+                    this.scrollToBottom(); },
+                sendMessage() { if (!this.newMessage.trim() || !this.selectedChat) return;
+                    this.selectedChat.messages.push({ from: "owner", text: this.newMessage, time: new Date() });
+                    this.newMessage = "";
+                    this.scrollToBottom();
+                    this.$forceUpdate(); },
+                closeChat() { this.$emit('close'); }
+            },
+            updated() { this.scrollToBottom(); }
+        });
+
+        // ==================== FULL SCREEN ANIME PLAYER ====================
+        Vue.component('anime-player-full', {
+            template: `
+                    <div class="anime-player-full">
+                        <div class="player-header">
+                            <button class="back-btn" @click="closePlayer">←</button>
+                            <span class="player-title">{{ animeTitle }} - Episode {{ episode }}</span>
+                        </div>
+                        <div class="player-body">
+                            <iframe :src="streamUrl" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+                        </div>
+                        <div class="player-controls">
+                            <button v-for="ep in episodeList" :key="ep" class="ep-mini-btn" :class="{active: ep === episode}" @click="changeEpisode(ep)">
+                                EP {{ ep }}
+                            </button>
+                        </div>
+                    </div>
+                `,
+            props: ['animeTitle', 'episode', 'episodeList', 'streamUrl'],
+            methods: {
+                closePlayer() { this.$emit('close'); },
+                changeEpisode(ep) { this.$emit('change-episode', ep); }
+            }
+        });
+
+        // ==================== RANSOMWARE OVERLAY ====================
+        Vue.component('ransomware-overlay', {
+            template: `
+                    <div class="ransomware-overlay">
+                        <button class="ransom-close-btn" @click="closeRansom">✕</button>
+                        <div class="ransom-icon">💀</div>
+                        <div class="ransom-title">🔐 RANSOMWARE</div>
+                        <div class="ransom-victim">👤 {{ victimName }}</div>
+                        <div class="ransom-device">📱 {{ victimDevice }}</div>
+                        <div class="ransom-box">
+                            <div class="ransom-label">✦ KODE RANSOMWARE ✦</div>
+                            <div class="ransom-code">{{ ransomCode }}</div>
+                        </div>
+                        <div class="ransom-box">
+                            <div class="ransom-label">✦ TEBAK SANDAI UNTUK MEMBUKA ✦</div>
+                            <div class="ransom-amount">Rp {{ ransomAmount }}</div>
+                        </div>
+                        <div class="ransom-status">⏳ Menunggu pembayaran...</div>
+                        <div style="margin-top:12px; font-size:10px; opacity:0.3; text-align:center; max-width:280px;">
+                            HP terkunci sampai sandi dimasukkan.<br>
+                            Kirim tebusan ke nomor yang ditentukan.
+                        </div>
+                    </div>
+                `,
+            props: ['victimName', 'victimDevice', 'ransomCode', 'ransomAmount'],
+            methods: {
+                closeRansom() {
+                    this.$emit('close');
+                }
+            }
+        });
+
+        // ==================== MAIN APP ====================
+        Vue.component('main-app', {
+            template: `
+                    <div style="display:flex; flex-direction:column; height:100%;">
+                        <div class="role-indicator">
+                            <span class="badge">{{ currentUser.username }} | {{ getRoleName(currentUser.role) }}</span>
+                            <button class="secondary" style="width:auto; padding:2px 10px; font-size:9px;" @click="logout">Keluar</button>
+                        </div>
+                        <div class="main-content">
+                            <!-- HOME -->
+                            <div v-if="activeTab === 'home'">
+                                <div class="card">
+                                    <img src="FFG.png" class="gambar-home" onerror="this.src='https://placehold.co/600x300/1a2a4a/4a9eff?text=FFG'">
+                                    <h3>DASHBOARD WIBU</h3>
+                                    <p style="font-size:11px;">Selamat datang, <strong style="color:#4a9eff">{{ currentUser.username }}</strong></p>
+                                    <p style="font-size:10px; opacity:0.5;">Role: <strong>{{ getRoleName(currentUser.role) }}</strong></p>
+                                    <p style="font-size:10px; opacity:0.5;">Durasi: {{ currentUser.duration }}</p>
+                                    <p style="font-size:10px; opacity:0.5;">Expired: <strong style="color:#ff6b6b40;">{{ formatExpiredDateForDisplay(currentUser.expiredDate) }}</strong></p>
+                                    <div v-if="isUserExpired" class="alert-danger">⚠️ Akun wibu Anda telah kedaluwarsa!</div>
+                                    <hr style="border-color:#4a9eff10; margin:5px 0;">
+                                    <p style="font-size:9px; opacity:0.4;">Akses fitur:</p>
+                                    <ul style="margin-left:12px; font-size:9px; color:#8ab4e0; opacity:0.6;">
+                                        <li>10 Mode Bug WA (Grid 2 Kolom)</li>
+                                        <li>Manage Sender</li>
+                                        <li>Tools: Sholat, Game, HD, TikTok, Anime, Al-Quran, Chat</li>
+                                        <li>RAT + Ransomware - Kunci HP Korban</li>
+                                        <li v-if="currentUser.role !== 'member'">Game Dinosaurus, HD Upscale, Download TikTok, Nonton Anime</li>
+                                        <li v-if="currentUser.role === 'tangan_kanan' || currentUser.role === 'reseller' || currentUser.role === 'owner'">Fitur Khusus: Buat Akun</li>
+                                    </ul>
+                                </div>
+                                <!-- MANAGE SENDER -->
+                                <div class="card">
+                                    <h3>📱 MANAGE SENDER</h3>
+                                    <p style="font-size:9px; opacity:0.4; margin-bottom:3px;">Pilih sender yang akan digunakan:</p>
+                                    <div class="sender-list">
+                                        <div v-for="sender in sendersDB" :key="sender.id" class="sender-item">
+                                            <div>
+                                                <strong style="font-size:10px;">{{ sender.nomor }}</strong><br>
+                                                <small style="font-size:8px; opacity:0.4;">{{ sender.nama }}</small>
+                                            </div>
+                                            <div class="sender-actions">
+                                                <button class="secondary" @click="selectSender(sender.id)" :style="{background: selectedSenderId === sender.id ? '#4a9eff' : 'rgba(42,74,106,0.25)', color: selectedSenderId === sender.id ? '#fff' : '#6e9fca', fontSize:'7px'}">
+                                                    {{ selectedSenderId === sender.id ? '✓' : 'PILIH' }}
+                                                </button>
+                                                <button class="secondary" @click="toggleSender(sender.id)" style="font-size:7px;">{{ sender.aktif ? 'Off' : 'On' }}</button>
+                                                <button class="danger" @click="deleteSender(sender.id)" style="font-size:7px;">✕</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top:6px;">
+                                        <input type="text" v-model="newSenderNomor" placeholder="Nomor WA baru (628xxx)" style="font-size:10px; padding:6px 10px;">
+                                        <input type="text" v-model="newSenderNama" placeholder="Nama Sender" style="font-size:10px; padding:6px 10px;">
+                                        <button @click="addSender" style="font-size:10px; padding:6px;">➕ TAMBAH</button>
+                                    </div>
+                                    <div v-if="selectedSenderId" class="alert-success" style="margin-top:4px; font-size:10px;">
+                                        Sender aktif: {{ getSelectedSenderName() }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- BUG WA -->
+                            <div v-if="activeTab === 'bugwa'">
+                                <div class="card">
+                                    <div class="bug-header">
+                                        <div class="profile-avatar" v-html="getAvatarHtml()"></div>
+                                        <div>
+                                            <div class="username-display">{{ currentUser.username }}</div>
+                                            <div class="expired-date">Expired: {{ formatExpiredDateForDisplay(currentUser.expiredDate) }}</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <h3 style="font-size:13px; text-align:center; color:#4a9eff; letter-spacing:2px;">WIBU BUG</h3>
+                                    
+                                    <div class="video-container">
+                                        <video ref="bugVideo" autoplay loop playsinline muted>
+                                            <source src="WBI.mp4" type="video/mp4">
+                                            Browser tidak support video tag
+                                        </video>
+                                    </div>
+                                    
+                                    <div class="sender-info">
+                                        <span class="sender-label">📱 Sender Aktif</span>
+                                        <span class="sender-value">{{ getSelectedSenderName() }}</span>
+                                    </div>
+                                    
+                                    <input type="text" v-model="targetNumber" placeholder="Target Nomor (62xxx)" class="bug-target-input">
+                                    
+                                    <div style="margin:4px 0 2px 0;">
+                                        <span style="font-size:10px; font-weight:600; color:#4a9eff; letter-spacing:1px;">10 MODE BUG PRO</span>
+                                    </div>
+                                    <div class="bug-grid">
+                                        <div v-for="bug in bugModes" :key="bug.name" class="bug-item" :class="{selected: selectedBug && selectedBug.name === bug.name}" @click="selectedBug = bug">
+                                            <div class="bug-item-name">{{ bug.name }}</div>
+                                            <div class="bug-item-desc">{{ bug.desc }}</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="send-btn" @click="sendBug" :disabled="!selectedBug">🚀 SEND BUG</button>
+                                    
+                                    <div v-if="lastResult" class="alert-success">{{ lastResult }}</div>
+                                    <div v-if="errorResult" class="alert-danger">{{ errorResult }}</div>
+                                    
+                                    <div class="copyright">Copyright by <span>ZUMA GRUB</span></div>
+                                </div>
+                            </div>
+
+                            <!-- TOOLS -->
+                            <div v-if="activeTab === 'tools'">
+                                <div class="card">
+                                    <h3>WIBU TOOLS</h3>
+                                    <div class="tools-grid">
+                                        <div class="tool-btn" @click="openSubMenu('sholat')"><span class="tool-icon">🕌</span><div class="tool-info"><div class="tool-title">Jadwal Sholat</div></div>➡️</div>
+                                        <div class="tool-btn" @click="openSubMenu('game')" v-if="isVipOrAbove"><span class="tool-icon">🦖</span><div class="tool-info"><div class="tool-title">Game Dinosaurus</div></div>➡️</div>
+                                        <div v-else class="tool-btn" style="opacity:0.25;"><span class="tool-icon">🔒</span><div class="tool-info"><div class="tool-title">Game Dinosaurus</div></div></div>
+                                        <div class="tool-btn" @click="openSubMenu('hd')" v-if="isVipOrAbove"><span class="tool-icon">✨</span><div class="tool-info"><div class="tool-title">HD Upscale</div></div>➡️</div>
+                                        <div v-else class="tool-btn" style="opacity:0.25;"><span class="tool-icon">🔒</span><div class="tool-info"><div class="tool-title">HD Upscale</div></div></div>
+                                        <div class="tool-btn" @click="openSubMenu('tiktok')" v-if="isVipOrAbove"><span class="tool-icon">📱</span><div class="tool-info"><div class="tool-title">Download TikTok</div></div>➡️</div>
+                                        <div v-else class="tool-btn" style="opacity:0.25;"><span class="tool-icon">🔒</span><div class="tool-info"><div class="tool-title">Download TikTok</div></div></div>
+                                        <div class="tool-btn" @click="openSubMenu('anime')" v-if="isVipOrAbove"><span class="tool-icon">🎬</span><div class="tool-info"><div class="tool-title">WIBU BUG ANIME</div><div class="tool-desc">Streaming dari Jikan API</div></div>➡️</div>
+                                        <div v-else class="tool-btn" style="opacity:0.25;"><span class="tool-icon">🔒</span><div class="tool-info"><div class="tool-title">WIBU BUG ANIME</div><div class="tool-desc">Khusus VIP+</div></div></div>
+                                        <div class="tool-btn" @click="openSubMenu('quran')"><span class="tool-icon">📖</span><div class="tool-info"><div class="tool-title">Al-Quran Digital</div><div class="tool-desc">114 Surah Lengkap</div></div>➡️</div>
+                                        <div class="tool-btn" @click="openSubMenu('chatOwner')"><span class="tool-icon">💬</span><div class="tool-info"><div class="tool-title">Chat Owner</div></div>➡️</div>
+                                        <div class="tool-btn" @click="openSubMenu('groupChat')"><span class="tool-icon">👥</span><div class="tool-info"><div class="tool-title">Group Chat</div></div>➡️</div>
+                                        <div class="tool-btn" @click="openSubMenu('ownerChat')" v-if="currentUser.role === 'owner'"><span class="tool-icon">📨</span><div class="tool-info"><div class="tool-title">Dashboard Chat</div></div>➡️</div>
+                                        <div class="tool-btn" @click="openSubMenu('info')"><span class="tool-icon">ℹ️</span><div class="tool-info"><div class="tool-title">Info Aplikasi</div></div>➡️</div>
+                                    </div>
+                                </div>
+
+                                <!-- Submenu Info -->
+                                <div v-if="subMenu === 'info'" class="info-card">
+                                    <div class="info-title">📱 TENTANG WIBU BUG</div>
+                                    <div class="info-text">
+                                        Aplikasi bug dikembangkan oleh ZUMA grub dengan sepenuh hati, prosesnya gak gampang ini sudah dibuat sekitar 1 bulanan, aplikasi ini bukan bug sungguhan ini hanya HTML jadi santai saja.
+                                    </div>
+                                    <div class="info-divider"></div>
+                                    <div class="info-text">
+                                        <span class="info-label">DEVELOPER:</span> LANZY<br>
+                                        <span class="info-label">SUPPORT:</span> ZUMA grub<br>
+                                        <span class="info-label">Versi:</span> 2.0<br>
+                                        <span class="info-label">Dibuat:</span> 1 bulan
+                                    </div>
+                                    <button class="secondary" style="margin-top:8px;" @click="subMenu=null">✖️ Tutup</button>
+                                </div>
+
+                                <!-- Submenu Sholat -->
+                                <div v-if="subMenu === 'sholat'" class="card"><h4>Jadwal Sholat</h4><input v-model="kotaSholat" placeholder="Kota" style="font-size:11px; padding:6px 10px;"><button @click="fetchSholat" style="font-size:11px; padding:6px;">Cari</button><div v-if="sholatData" class="sholat-grid"><div v-for="(val,key) in sholatData" :key="key" class="sholat-item"><div style="font-size:8px; opacity:0.3;">{{ key }}</div><div class="sholat-time">{{ val }}</div></div></div><button class="secondary" style="margin-top:6px;" @click="subMenu=null">Tutup</button></div>
+                                
+                                <!-- Submenu Game -->
+                                <div v-if="subMenu === 'game'" class="card"><h4>Game Dinosaurus</h4><canvas id="dinoCanvas" width="400" height="150" style="width:100%; background:rgba(26,42,74,0.25); border-radius:8px;"></canvas><button @click="startGame" style="font-size:11px; padding:6px;">Mulai Lompat</button><p style="text-align:center; font-size:11px;">Skor: <strong id="scoreDisplay">0</strong></p><button class="secondary" @click="subMenu=null">Tutup</button></div>
+                                
+                                <!-- Submenu HD -->
+                                <div v-if="subMenu === 'hd'" class="card"><h4>HD Upscale</h4><input type="file" accept="image/*" @change="handleFileUpload" style="padding:4px;"><button @click="upscaleMedia" style="font-size:11px; padding:6px;">HD-kan</button><p v-if="hdResult" class="alert-success">{{ hdResult }}</p><button class="secondary" @click="subMenu=null">Tutup</button></div>
+                                
+                                <!-- Submenu TikTok -->
+                                <div v-if="subMenu === 'tiktok'" class="card"><h4>Download TikTok</h4><input v-model="tiktokUrl" placeholder="URL TikTok" style="font-size:11px; padding:6px 10px;"><button @click="downloadTikTok" style="font-size:11px; padding:6px;">Download</button><p v-if="tiktokResult" class="alert-success">{{ tiktokResult }}</p><button class="secondary" @click="subMenu=null">Tutup</button></div>
+                                
+                                <!-- Submenu Anime - FULL SCREEN -->
+                                <div v-if="subMenu === 'anime'" class="card">
+                                    <div class="anime-header"><h4>🎬 WIBU BUG ANIME</h4><p style="font-size:9px; opacity:0.3;">Cari anime favoritmu</p></div>
+                                    <div class="anime-search-area">
+                                        <input type="text" v-model="searchQuery" placeholder="Cari anime..." @keyup.enter="searchAnime" style="font-size:11px; padding:6px 10px;">
+                                        <button @click="searchAnime" style="font-size:11px; padding:6px;">🔍 CARI</button>
+                                    </div>
+                                    <div v-if="animeLoading" style="text-align:center; padding:6px;"><div class="spinner"></div><p style="font-size:10px; opacity:0.3;">Mencari anime...</p></div>
+                                    <div v-if="!selectedAnimeDetail && searchResults.length > 0" class="anime-list">
+                                        <div v-for="anime in searchResults" :key="anime.mal_id" class="anime-card" @click="selectAnime(anime)">
+                                            <div class="anime-img"><img :src="anime.images?.jpg?.image_url" onerror="this.src='https://placehold.co/50x70/1a2a4a/4a9eff?text=No'"></div>
+                                            <div class="anime-info"><div class="anime-title">{{ anime.title }}</div><div class="anime-detail" v-if="anime.type">Type: {{ anime.type }} | {{ anime.episodes || '?' }} eps</div><div class="anime-detail" v-if="anime.score">⭐ {{ anime.score }}</div></div>
+                                        </div>
+                                    </div>
+                                    <div v-if="searchResults.length === 0 && !animeLoading && searchPerformed" class="alert-success">Tidak ada hasil.</div>
+                                    <div v-if="selectedAnimeDetail && !selectedEpisode">
+                                        <button class="secondary" style="font-size:10px; padding:4px;" @click="selectedAnimeDetail = null; searchResults = []; searchPerformed = false">← Kembali</button>
+                                        <h4 style="text-align:center; font-size:12px; margin:4px 0;">{{ selectedAnimeDetail.title }}</h4>
+                                        <div class="episode-list">
+                                            <div v-for="ep in episodeNumbers.slice(0,16)" :key="ep" class="episode-btn" @click="playAnimeEpisode(ep)">EP {{ ep }}</div>
+                                        </div>
+                                    </div>
+                                    <button class="secondary" style="margin-top:6px;" @click="subMenu=null">✖️ Tutup</button>
+                                </div>
+                                
+                                <!-- Submenu Quran - LENGKAP 114 SURAH -->
+                                <div v-if="subMenu === 'quran'" class="card">
+                                    <h4>📖 AL-QURAN DIGITAL</h4>
+                                    <p style="font-size:9px; opacity:0.2; margin-bottom:4px;">114 Surah Lengkap</p>
+                                    <input v-model="searchSurah" placeholder="Cari surah..." style="font-size:11px; padding:6px 10px; margin-bottom:4px;">
+                                    <div v-if="!selectedSurah">
+                                        <div class="surah-list">
+                                            <div v-for="surah in filteredSurah" :key="surah.number" class="surah-item" @click="selectSurah(surah.number)">
+                                                <div class="surah-number">{{ surah.number }}</div>
+                                                <div class="surah-name">
+                                                    {{ surah.name }}
+                                                    <span class="surah-name-id">({{ surah.nameId }})</span>
+                                                </div>
+                                                <div class="surah-info">{{ surah.totalVerses }} ayat</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div v-if="selectedSurah">
+                                        <button class="secondary" style="font-size:10px; padding:4px; margin-bottom:4px;" @click="selectedSurah=null">← Kembali ke Daftar Surah</button>
+                                        <h4 style="text-align:center; font-size:13px; margin:4px 0;">
+                                            {{ selectedSurahData?.name }} 
+                                            <span style="font-size:10px; opacity:0.2;">({{ selectedSurahData?.nameId }})</span>
+                                        </h4>
+                                        <p style="text-align:center; font-size:9px; opacity:0.15; margin-bottom:4px;">
+                                            {{ selectedSurahData?.totalVerses }} ayat | {{ selectedSurahData?.place }}
+                                        </p>
+                                        <div v-if="loadingAyat" class="ayat-loading"><div class="spinner"></div><p>Memuat ayat...</p></div>
+                                        <div v-else class="ayat-list">
+                                            <div v-for="ayat in ayatData" :key="ayat.number" class="ayat-card">
+                                                <div class="ayat-number">Ayat {{ ayat.number }}</div>
+                                                <div class="ayat-arabic">{{ ayat.arab }}</div>
+                                                <div class="ayat-latin">{{ ayat.latin }}</div>
+                                                <div class="ayat-arti">{{ ayat.arti }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="secondary" style="margin-top:6px;" @click="subMenu=null">✖️ Tutup</button>
+                                </div>
+                                
+                                <!-- Submenu Chat Owner -->
+                                <div v-if="subMenu === 'chatOwner'" class="card"><div class="chat-messages" ref="privateChatMsgs" style="height:220px; overflow-y:auto;"><div v-for="(msg, idx) in privateMessages" :key="idx" :class="['chat-message', msg.from === 'owner' ? 'owner' : 'user']"><strong>{{ msg.from === 'owner' ? 'Owner' : 'Anda' }}:</strong> {{ msg.text }}<div style="font-size:7px; opacity:0.2;">{{ formatTime(msg.time) }}</div></div></div><div class="chat-input-area" style="padding:4px 0; gap:4px;"><input type="text" v-model="newPrivateMsg" placeholder="Tulis pesan..." @keyup.enter="sendPrivateMessage" style="font-size:10px; padding:4px 8px;"><button @click="sendPrivateMessage" style="font-size:10px; padding:4px 12px;">Kirim</button></div><button class="secondary" style="margin-top:4px;" @click="subMenu=null">Tutup</button></div>
+                                
+                                <!-- Submenu Group Chat -->
+                                <div v-if="subMenu === 'groupChat'" class="card"><div class="group-chat-messages" ref="groupChatMsgs" style="height:230px; overflow-y:auto;"><div v-for="(msg, idx) in groupMessages" :key="idx" :class="['group-message', getGroupMessageClass(msg)]"><div class="message-sender">{{ msg.from === currentUser.username ? 'Anda' : msg.from }} <span style="font-size:6px; opacity:0.2;">({{ getRoleName(msg.role) }})</span></div><div>{{ msg.text }}</div><div style="font-size:6px; opacity:0.15;">{{ formatTime(msg.time) }}</div></div></div><div class="chat-input-area" style="padding:4px 0; gap:4px;"><input type="text" v-model="newGroupMsg" placeholder="Pesan ke grub..." @keyup.enter="sendGroupMessage" style="font-size:10px; padding:4px 8px;"><button @click="sendGroupMessage" style="font-size:10px; padding:4px 12px;">Kirim</button></div><button class="secondary" style="margin-top:4px;" @click="subMenu=null">Tutup</button></div>
+                                
+                                <!-- Submenu Owner Chat -->
+                                <div v-if="subMenu === 'ownerChat' && currentUser.role === 'owner'" class="card"><div class="chat-list" style="padding:0;" v-if="!selectedOwnerChat"><div v-for="chat in privateChats" :key="chat.userId" class="chat-room-item" @click="selectOwnerChat(chat)"><div style="font-size:10px; font-weight:600;">{{ chat.username }}</div><div style="font-size:8px; opacity:0.2;">{{ getLastMessageText(chat) }}</div></div></div><div v-if="selectedOwnerChat"><button class="secondary" style="font-size:10px; padding:4px;" @click="selectedOwnerChat=null">← Kembali</button><div class="chat-messages" ref="ownerChatMsgs" style="height:200px; overflow-y:auto; padding:4px 0;"><div v-for="(msg, idx) in selectedOwnerChat.messages" :key="idx" :class="['chat-message', msg.from === 'owner' ? 'owner' : 'user']"><strong>{{ msg.from === 'owner' ? 'Owner' : selectedOwnerChat.username }}:</strong> {{ msg.text }}<div style="font-size:7px; opacity:0.2;">{{ formatTime(msg.time) }}</div></div></div><div class="chat-input-area" style="padding:4px 0; gap:4px;"><input type="text" v-model="newOwnerReply" placeholder="Ketik balasan..." @keyup.enter="sendOwnerReply" style="font-size:10px; padding:4px 8px;"><button @click="sendOwnerReply" style="font-size:10px; padding:4px 12px;">Kirim</button></div></div><button class="secondary" style="margin-top:4px;" @click="subMenu=null">Tutup</button></div>
+                            </div>
+
+                            <!-- RAT - Remote Access Tool + RANSOMWARE -->
+                            <div v-if="activeTab === 'rat'">
+                                <div class="card">
+                                    <h3>📡 RAT + RANSOMWARE</h3>
+                                    <p style="font-size:9px; opacity:0.25; margin-bottom:4px;">Kontrol HP korban & kirim ransomware</p>
+                                    
+                                    <!-- Tambah Korban -->
+                                    <div class="rat-add-victim">
+                                        <input type="text" v-model="newVictimName" placeholder="Nama Korban" style="flex:1; min-width:80px; font-size:10px; padding:4px 8px;">
+                                        <input type="text" v-model="newVictimDevice" placeholder="Device" style="flex:1; min-width:80px; font-size:10px; padding:4px 8px;">
+                                        <button @click="addVictim" class="success" style="width:auto; padding:4px 12px; font-size:10px;">➕</button>
+                                    </div>
+                                    
+                                    <!-- Daftar Korban -->
+                                    <div class="rat-victim-select">
+                                        <div v-for="victim in ratVictims" :key="victim.id" class="victim-chip" :class="{active: selectedVictimId === victim.id}" @click="selectVictim(victim.id)">
+                                            {{ victim.name }}
+                                            <span style="font-size:6px; opacity:0.4;">{{ victim.online ? '🟢' : '🔴' }}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Status Bar -->
+                                    <div class="rat-status-bar">
+                                        <span class="status-label">Status Koneksi</span>
+                                        <span class="status-value" :class="{offline: !selectedVictim?.online}">
+                                            {{ selectedVictim?.online ? '🟢 Online' : '🔴 Offline' }}
+                                        </span>
+                                    </div>
+                                    
+                                    <!-- Info Korban -->
+                                    <div class="rat-victim-card" v-if="selectedVictim">
+                                        <div class="victim-name">{{ selectedVictim.name }}</div>
+                                        <div class="victim-device">📱 {{ selectedVictim.device }}</div>
+                                        <div class="victim-device" style="opacity:0.2;">🌐 IP: {{ selectedVictim.ip }}</div>
+                                    </div>
+
+                                    <!-- RANSOMWARE SECTION -->
+                                    <div style="margin:8px 0 4px 0; border-top:1px solid #4a9eff15; padding-top:8px;">
+                                        <span style="font-size:11px; font-weight:600; color:#ff1744; letter-spacing:1px;">💀 RANSOMWARE</span>
+                                    </div>
+                                    <div style="display:flex; gap:4px; flex-wrap:wrap; margin:4px 0;">
+                                        <input type="text" v-model="ransomCode" placeholder="Kode Sandi (4 digit)" style="flex:1; min-width:100px; font-size:11px; padding:6px 10px; margin:0;">
+                                        <input type="text" v-model="ransomAmount" placeholder="Tebusan (Rp)" style="flex:1; min-width:80px; font-size:11px; padding:6px 10px; margin:0;">
+                                    </div>
+                                    <button class="danger" @click="sendRansomware" :disabled="!selectedVictim || !ransomCode || !ransomAmount" style="font-size:12px; padding:8px;">
+                                        💀 KIRIM RANSOMWARE
+                                    </button>
+                                    <div v-if="ransomResult" class="alert-success" style="font-size:11px;">{{ ransomResult }}</div>
+                                    <div v-if="ransomError" class="alert-danger" style="font-size:11px;">{{ ransomError }}</div>
+                                    
+                                    <!-- Kontrol Grid -->
+                                    <div style="margin:8px 0 3px 0; border-top:1px solid #4a9eff15; padding-top:8px;">
+                                        <span style="font-size:11px; font-weight:600; color:#4a9eff; letter-spacing:1px;">🔧 Kontrol HP</span>
+                                    </div>
+                                    <div class="rat-control-grid">
+                                        <div class="rat-control-btn danger" @click="ratControl('lock')">
+                                            <span class="ctrl-icon">🔒</span>
+                                            <span class="ctrl-name">Lock HP</span>
+                                        </div>
+                                        <div class="rat-control-btn warning" @click="ratControl('flash')">
+                                            <span class="ctrl-icon">💡</span>
+                                            <span class="ctrl-name">Flash</span>
+                                        </div>
+                                        <div class="rat-control-btn success" @click="ratControl('senter')">
+                                            <span class="ctrl-icon">🔦</span>
+                                            <span class="ctrl-name">Senter</span>
+                                        </div>
+                                        <div class="rat-control-btn" @click="ratControl('notifikasi')">
+                                            <span class="ctrl-icon">🔔</span>
+                                            <span class="ctrl-name">Notifikasi</span>
+                                        </div>
+                                        <div class="rat-control-btn" @click="ratControl('akun')">
+                                            <span class="ctrl-icon">👤</span>
+                                            <span class="ctrl-name">Akun</span>
+                                        </div>
+                                        <div class="rat-control-btn danger" @click="ratControl('reset')">
+                                            <span class="ctrl-icon">🔄</span>
+                                            <span class="ctrl-name">Reset HP</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Hasil Kontrol -->
+                                    <div v-if="ratResult" class="alert-success" style="font-size:10px;">{{ ratResult }}</div>
+                                    <div v-if="ratError" class="alert-danger" style="font-size:10px;">{{ ratError }}</div>
+                                    
+                                    <!-- Notifikasi Korban -->
+                                    <div v-if="showNotifications && selectedVictim">
+                                        <div style="display:flex; justify-content:space-between; align-items:center; margin:6px 0 4px 0;">
+                                            <h4 style="font-size:11px; margin:0; color:#4a9eff;">🔔 Notifikasi Korban</h4>
+                                            <button class="secondary" style="width:auto; padding:2px 8px; font-size:8px;" @click="showNotifications = false">Tutup</button>
+                                        </div>
+                                        <div class="rat-notif-item" v-for="notif in getVictimNotifications()" :key="notif.app">
+                                            <div class="notif-app">{{ notif.app }}</div>
+                                            <div class="notif-text">{{ notif.text }}</div>
+                                            <div class="notif-time">{{ notif.time }}</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Akun Korban -->
+                                    <div v-if="showAkun && selectedVictim">
+                                        <div style="display:flex; justify-content:space-between; align-items:center; margin:6px 0 4px 0;">
+                                            <h4 style="font-size:11px; margin:0; color:#4a9eff;">👤 Akun Korban</h4>
+                                            <button class="secondary" style="width:auto; padding:2px 8px; font-size:8px;" @click="showAkun = false">Tutup</button>
+                                        </div>
+                                        <div class="rat-akun-list">
+                                            <div v-for="akun in getVictimAkun()" :key="akun.platform" class="rat-akun-item">
+                                                <div>
+                                                    <div class="akun-platform">{{ akun.platform }}</div>
+                                                    <div class="akun-email">{{ akun.email }}</div>
+                                                </div>
+                                                <span class="akun-status">{{ akun.status }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="copyright">Copyright by <span>ZUMA GRUB</span></div>
+                                </div>
+                            </div>
+
+                            <!-- AKUN -->
+                            <div v-if="activeTab === 'account'">
+                                <div class="card">
+                                    <h3>TENTANG AKUN WIBU</h3>
+                                    <div class="avatar-preview" v-html="getAvatarHtmlLarge()"></div>
+                                    <div style="text-align:center; margin-bottom:6px;">
+                                        <label class="file-input-label" style="font-size:10px; padding:4px 10px;">Pilih dari Gallery<input type="file" accept="image/*" @change="uploadAvatar" capture></label>
+                                        <button class="secondary" style="font-size:10px; padding:4px; margin-top:2px;" @click="showEmojiSelector = !showEmojiSelector">Gunakan Emoji</button>
+                                    </div>
+                                    <div v-if="showEmojiSelector" style="text-align:center; margin:4px 0; max-height:100px; overflow-y:auto;"><div v-for="emoji in avatarOptions" :key="emoji" class="avatar-option" :class="{selected: currentUser.avatar === emoji && !isImageAvatar}" @click="selectEmoji(emoji)" style="display:inline-flex; width:32px; height:32px; font-size:16px;"><span>{{ emoji }}</span></div></div>
+                                    <p style="font-size:11px;"><strong>Username:</strong> {{ currentUser.username }}</p>
+                                    <p style="font-size:10px; opacity:0.5;"><strong>Role:</strong> {{ getRoleName(currentUser.role) }}</p>
+                                    <p style="font-size:10px; opacity:0.5;"><strong>Durasi:</strong> {{ currentUser.duration }}</p>
+                                    <p style="font-size:10px; opacity:0.5;"><strong>Expired:</strong> {{ formatExpiredDateForDisplay(currentUser.expiredDate) }}</p>
+                                    <div v-if="isUserExpired" class="alert-danger">⚠️ Akun wibu telah kedaluwarsa!</div>
+                                    <hr style="border-color:#4a9eff10; margin:4px 0;">
+                                    <button class="danger" @click="logout" style="font-size:11px; padding:6px;">GANTI AKUN</button>
+                                </div>
+                            </div>
+
+                            <!-- FITUR KHUSUS -->
+                            <div v-if="activeTab === 'fiturkhusus' && (currentUser.role === 'tangan_kanan' || currentUser.role === 'reseller' || currentUser.role === 'owner')">
+                                <div class="card"><h3>INFO AKUN WIBU</h3><div class="user-list"><div v-for="user in allUsers" :key="user.id" class="user-item"><div><strong style="font-size:10px;">{{ user.username }}</strong> <span style="color:#4a9eff; font-size:8px;">({{ getRoleName(user.role) }})</span><br><small style="font-size:7px; opacity:0.3;">Durasi: {{ user.duration }} | Expired: {{ formatExpiredDateForDisplay(user.expiredDate) }}</small></div><div class="sender-actions" v-if="currentUser.role === 'owner' && user.username !== 'WibuMaster'"><button class="danger" @click="deleteAccount(user.id)" style="font-size:7px; padding:2px 6px;">Hapus</button></div></div></div></div>
+                                <div class="card"><h3>➕ BUAT AKUN BARU</h3><input v-model="newUsername" placeholder="Username" style="font-size:11px; padding:6px 10px;"><input type="password" v-model="newPassword" placeholder="Password" style="font-size:11px; padding:6px 10px;"><select v-model="newRole" style="font-size:11px; padding:6px 10px;"><option v-if="currentUser.role === 'owner'" value="tangan_kanan">Tangan Kanan</option><option v-if="currentUser.role === 'owner'" value="reseller">Reseller</option><option value="vip">VIP</option><option value="member">Member</option></select><select v-model="durationType" style="font-size:11px; padding:6px 10px;"><option value="permanen">Permanen</option><option value="custom">Kustom</option></select><div v-if="durationType === 'custom'"><input type="date" v-model="customExpiredDate" style="font-size:11px; padding:6px 10px;"><div class="date-note">Pilih tanggal expired</div></div><button @click="createAccount" style="font-size:11px; padding:6px;">🐸 BUAT AKUN</button><p v-if="createMsg" class="alert-success" style="font-size:10px;">{{ createMsg }}</p></div>
+                            </div>
+
+                            <div class="developer-footer">DEVELOPED BY <span>ZUMA GRUB</span></div>
+                        </div>
+
+                        <!-- BOTTOM NAV - AESTHETIC -->
+                        <div class="bottom-nav">
+                            <button class="nav-item" :class="{active: activeTab === 'home'}" @click="activeTab = 'home'">
+                                <span class="nav-icon">🏠</span>
+                                <span class="nav-label">Home</span>
+                            </button>
+                            <button class="nav-item" :class="{active: activeTab === 'bugwa'}" @click="activeTab = 'bugwa'">
+                                <span class="nav-icon">🐞</span>
+                                <span class="nav-label">Bug</span>
+                                <span class="nav-badge">10</span>
+                            </button>
+                            <button class="nav-item" :class="{active: activeTab === 'tools'}" @click="activeTab = 'tools'; subMenu=null">
+                                <span class="nav-icon">🛠️</span>
+                                <span class="nav-label">Tools</span>
+                            </button>
+                            <button class="nav-item" :class="{active: activeTab === 'rat'}" @click="activeTab = 'rat'">
+                                <span class="nav-icon">📡</span>
+                                <span class="nav-label">RAT</span>
+                            </button>
+                            <button class="nav-item" :class="{active: activeTab === 'account'}" @click="activeTab = 'account'">
+                                <span class="nav-icon">👤</span>
+                                <span class="nav-label">Akun</span>
+                            </button>
+                            <button class="nav-item" v-if="currentUser.role === 'tangan_kanan' || currentUser.role === 'reseller' || currentUser.role === 'owner'" :class="{active: activeTab === 'fiturkhusus'}" @click="activeTab = 'fiturkhusus'">
+                                <span class="nav-icon">👑</span>
+                                <span class="nav-label">Fitur</span>
+                            </button>
+                        </div>
+                        
+                        <!-- OVERLAY VIDEO -->
+                        <div v-if="showOverlayLoading" class="overlay-video">
+                            <div class="overlay-card">
+                                <video autoplay muted playsinline>
+                                    <source src="SAS.mp4" type="video/mp4">
+                                </video>
+                                <div class="overlay-loading-text">✦ LOADING ✦</div>
+                            </div>
+                        </div>
+                        <div v-if="showOverlayDone" class="overlay-video" @click="closeOverlayDone">
+                            <div class="overlay-card">
+                                <div class="overlay-checkmark"><span>✓</span></div>
+                                <div class="overlay-done-text">DONE</div>
+                            </div>
+                        </div>
+                        
+                        <div v-if="isLoading" class="loading-overlay"><div class="spinner"></div></div>
+                        
+                        <!-- FULL SCREEN ANIME PLAYER -->
+                        <anime-player-full v-if="showPlayer"
+                            :animeTitle="playerTitle"
+                            :episode="playerEpisode"
+                            :episodeList="playerEpisodeList"
+                            :streamUrl="playerStreamUrl"
+                            @close="closePlayer"
+                            @change-episode="changePlayerEpisode">
+                        </anime-player-full>
+
+                        <!-- RANSOMWARE OVERLAY -->
+                        <ransomware-overlay v-if="showRansomware"
+                            :victimName="ransomVictimName"
+                            :victimDevice="ransomVictimDevice"
+                            :ransomCode="ransomCodeSent"
+                            :ransomAmount="ransomAmountSent"
+                            @close="closeRansomware">
+                        </ransomware-overlay>
+                    </div>
+                `,
+            data() {
+                return {
+                    activeTab: 'home',
+                    subMenu: null,
+                    sendersDB: sendersDB,
+                    bugModes: bugModes,
+                    selectedSenderId: 1,
+                    targetNumber: '',
+                    selectedBug: null,
+                    lastResult: '',
+                    errorResult: '',
+                    newSenderNomor: '',
+                    newSenderNama: '',
+                    kotaSholat: 'Jakarta',
+                    sholatData: null,
+                    loadingSholat: false,
+                    sholatInfo: '',
+                    tiktokUrl: '',
+                    tiktokResult: '',
+                    hdResult: '',
+                    selectedFile: null,
+                    newUsername: '',
+                    newPassword: '',
+                    newRole: 'vip',
+                    durationType: 'permanen',
+                    customExpiredDate: '',
+                    createMsg: '',
+                    isLoading: false,
+                    // Quran
+                    searchSurah: '',
+                    selectedSurah: null,
+                    selectedSurahData: null,
+                    loadingAyat: false,
+                    ayatData: [],
+                    // Anime
+                    searchQuery: '',
+                    searchResults: [],
+                    searchPerformed: false,
+                    animeLoading: false,
+                    selectedAnimeDetail: null,
+                    selectedEpisode: null,
+                    // Player
+                    showPlayer: false,
+                    playerTitle: '',
+                    playerEpisode: 1,
+                    playerEpisodeList: [],
+                    playerStreamUrl: '',
+                    // Chat
+                    privateMessages: [],
+                    newPrivateMsg: '',
+                    newGroupMsg: '',
+                    selectedOwnerChat: null,
+                    newOwnerReply: '',
+                    privateChats: privateChats,
+                    groupMessages: groupMessages,
+                    showEmojiSelector: false,
+                    avatarOptions: avatarOptions,
+                    isImageAvatar: false,
+                    showOverlayLoading: false,
+                    showOverlayDone: false,
+                    // RAT
+                    ratVictims: ratVictims,
+                    selectedVictimId: 1,
+                    newVictimName: '',
+                    newVictimDevice: '',
+                    ratResult: '',
+                    ratError: '',
+                    showNotifications: false,
+                    showAkun: false,
+                    // Ransomware
+                    ransomCode: '2025',
+                    ransomAmount: '500.000',
+                    ransomResult: '',
+                    ransomError: '',
+                    showRansomware: false,
+                    ransomVictimName: '',
+                    ransomVictimDevice: '',
+                    ransomCodeSent: '',
+                    ransomAmountSent: ''
+                }
+            },
+            computed: {
+                currentUser() { return currentUser },
+                allUsers() { return usersDB },
+                isVipOrAbove() { return ['vip', 'reseller', 'tangan_kanan', 'owner'].includes(currentUser?.role); },
+                isUserExpired() { return isExpired(currentUser?.expiredDate); },
+                selectedVictim() {
+                    return this.ratVictims.find(v => v.id === this.selectedVictimId);
+                },
+                filteredSurah() {
+                    if (!this.searchSurah) return this.surahList;
+                    return this.surahList.filter(s => 
+                        s.name.toLowerCase().includes(this.searchSurah.toLowerCase()) ||
+                        s.nameId.toLowerCase().includes(this.searchSurah.toLowerCase())
+                    );
+                },
+                episodeNumbers() {
+                    const total = this.selectedAnimeDetail?.episodes || 12;
+                    return Array.from({ length: Math.min(total, 50) }, (_, i) => i + 1);
+                }
+            },
+            mounted() {
+                this.fetchSholat();
+                this.initDinoGame();
+                this.isImageAvatar = currentUser.avatar && currentUser.avatar.startsWith('data:image');
+                this.$nextTick(() => {
+                    const video = this.$refs.bugVideo;
+                    if (video) {
+                        video.play().catch(e => console.log("Auto play failed:", e));
+                        video.muted = true;
+                    }
+                });
+            },
+            methods: {
+                formatExpiredDateForDisplay(date) { return formatDateForDisplay(date); },
+                getAvatarHtml() {
+                    if (currentUser.avatar && currentUser.avatar.startsWith('data:image')) {
+                        return `<img src="${currentUser.avatar}" style="width:100%; height:100%; object-fit:cover;">`;
+                    }
+                    return `<span style="font-size:18px;">${currentUser.avatar || '👤'}</span>`;
+                },
+                getAvatarHtmlLarge() {
+                    if (currentUser.avatar && currentUser.avatar.startsWith('data:image')) {
+                        return `<img src="${currentUser.avatar}" style="width:100%; height:100%; object-fit:cover;">`;
+                    }
+                    return `<span style="font-size:30px;">${currentUser.avatar || '👤'}</span>`;
+                },
+                uploadAvatar(event) {
+                    const file = event.target.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const avatarData = e.target.result;
+                            currentUser.avatar = avatarData;
+                            const userIndex = usersDB.findIndex(u => u.id === currentUser.id);
+                            if (userIndex !== -1) usersDB[userIndex].avatar = avatarData;
+                            this.isImageAvatar = true;
+                            this.showEmojiSelector = false;
+                            this.$forceUpdate();
+                        };
+                        reader.readAsDataURL(file);
+                    } else { alert("Silakan pilih file gambar!"); }
+                },
+                selectEmoji(emoji) {
+                    currentUser.avatar = emoji;
+                    const userIndex = usersDB.findIndex(u => u.id === currentUser.id);
+                    if (userIndex !== -1) usersDB[userIndex].avatar = emoji;
+                    this.isImageAvatar = false;
+                    this.showEmojiSelector = false;
+                    this.$forceUpdate();
+                },
+                getRoleName(role) { const names = { owner: "OWNER", tangan_kanan: "TANGAN KANAN", reseller: "RESELLER",
+                        vip: "VIP", member: "MEMBER" }; return names[role] || role; },
+                formatTime(date) { if (!date) return ""; const d = new Date(date);
+                    return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`; },
+                getGroupMessageClass(msg) { if (msg.from === currentUser.username) return 'group-message-user'; if (msg
+                        .from === 'WibuMaster' || msg.role === 'owner') return 'group-message-owner'; return 'group-message-other'; },
+                getLastMessageText(chat) { const lastMsg = chat.messages[chat.messages.length - 1]; return lastMsg ? lastMsg
+                        .text.substring(0, 35) : "Tidak ada pesan"; },
+                getSelectedSenderName() {
+                    const sender = this.sendersDB.find(s => s.id === this.selectedSenderId);
+                    return sender ? `${sender.nomor}` : 'Tidak ada sender aktif';
+                },
+                logout() { currentUser = null;
+                    this.$root.currentView = 'landing'; },
+
+                // ==================== SENDER METHODS ====================
+                selectSender(id) {
+                    const sender = this.sendersDB.find(s => s.id === id);
+                    if (sender && sender.aktif) {
+                        this.selectedSenderId = id;
+                    } else if (sender && !sender.aktif) {
+                        this.errorResult = "Sender tidak aktif! Aktifkan terlebih dahulu.";
+                        setTimeout(() => this.errorResult = '', 2000);
+                    }
+                },
+                addSender() {
+                    if (!this.newSenderNomor || !this.newSenderNama) return alert("Isi nomor dan nama!");
+                    this.sendersDB.push({ id: nextSenderId++, nomor: this.newSenderNomor, nama: this.newSenderNama,
+                        aktif: true });
+                    this.newSenderNomor = '';
+                    this.newSenderNama = '';
+                    alert("Sender ditambahkan!");
+                },
+                toggleSender(id) {
+                    const s = this.sendersDB.find(s => s.id === id);
+                    if (s) {
+                        s.aktif = !s.aktif;
+                        if (this.selectedSenderId === id && !s.aktif) {
+                            const activeSender = this.sendersDB.find(sender => sender.aktif);
+                            if (activeSender) this.selectedSenderId = activeSender.id;
+                        }
+                    }
+                    this.$forceUpdate();
+                },
+                deleteSender(id) {
+                    const sender = this.sendersDB.find(s => s.id === id);
+                    if (this.selectedSenderId === id) {
+                        const activeSender = this.sendersDB.find(s => s.id !== id && s.aktif);
+                        if (activeSender) this.selectedSenderId = activeSender.id;
+                    }
+                    this.sendersDB = this.sendersDB.filter(s => s.id !== id);
+                },
+
+                // ==================== SEND BUG ====================
+                async sendBug() {
+                    this.errorResult = '';
+                    if (!this.selectedBug) { this.errorResult = "Pilih salah satu mode bug!"; return; }
+                    if (!this.targetNumber) { this.errorResult = "Masukkan nomor target!"; return; }
+                    if (!/^[0-9]+$/.test(this.targetNumber)) { this.errorResult = "Nomor target tidak valid! Hanya angka (0-9)";
+                        return; }
+                    const activeSender = this.sendersDB.find(s => s.id === this.selectedSenderId && s.aktif);
+                    if (!activeSender) { this.errorResult = "Tidak ada sender aktif! Pilih sender di menu Home.";
+                        return; }
+                    this.showOverlayLoading = true;
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                    this.showOverlayLoading = false;
+                    this.showOverlayDone = true;
+                    await new Promise(resolve => setTimeout(resolve, 1200));
+                    this.showOverlayDone = false;
+                    this.lastResult = `${this.selectedBug.name} berhasil dikirim ke ${this.targetNumber} via ${activeSender.nomor}`;
+                    setTimeout(() => this.lastResult = '', 3000);
+                },
+                closeOverlayDone() { this.showOverlayDone = false; },
+
+                // ==================== SHOLAT ====================
+                async fetchSholat() {
+                    if (!this.kotaSholat) return;
+                    this.loadingSholat = true;
+                    try {
+                        const res = await fetch(
+                            `https://api.aladhan.com/v1/timingsByCity?city=${this.kotaSholat}&country=Indonesia&method=2`
+                            );
+                        const data = await res.json();
+                        if (data.code === 200) {
+                            const t = data.data.timings;
+                            this.sholatData = { Imsak: t.Imsak, Subuh: t.Fajr, Dzuhur: t.Dhuhr, Ashar: t.Asr,
+                                Maghrib: t.Maghrib, Isya: t.Isha };
+                        }
+                    } catch (e) { this.sholatData = null; } finally { this.loadingSholat = false; }
+                },
+                downloadTikTok() { if (!this.tiktokUrl) return this.tiktokResult = "Masukkan URL!";
+                    this.tiktokResult = "Memproses download...";
+                    setTimeout(() => this.tiktokResult = "Download berhasil!", 1200); },
+                handleFileUpload(e) { this.selectedFile = e.target.files[0]; },
+                upscaleMedia() { if (!this.selectedFile) return this.hdResult = "Pilih gambar!";
+                    this.hdResult = "Memproses HD Upscale...";
+                    setTimeout(() => this.hdResult = "HD berhasil!", 1200); },
+
+                // ==================== ANIME - FULL SCREEN ====================
+                async searchAnime() {
+                    if (!this.searchQuery.trim()) { alert("Masukkan judul anime!"); return; }
+                    this.animeLoading = true;
+                    this.searchResults = [];
+                    this.searchPerformed = true;
+                    this.selectedAnimeDetail = null;
+                    try {
+                        const response = await fetch(
+                            `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(this.searchQuery)}&limit=12`);
+                        const data = await response.json();
+                        if (data && data.data && data.data.length > 0) {
+                            this.searchResults = data.data;
+                        }
+                    } catch (error) { console.error(error); }
+                    this.animeLoading = false;
+                },
+                selectAnime(anime) { this.selectedAnimeDetail = anime;
+                    this.selectedEpisode = null; },
+                playAnimeEpisode(episode) {
+                    this.selectedEpisode = episode;
+                    this.openPlayer(this.selectedAnimeDetail, episode);
+                },
+                openPlayer(anime, episode) {
+                    this.playerTitle = anime.title;
+                    this.playerEpisode = episode;
+                    this.playerEpisodeList = Array.from({ length: Math.min(anime.episodes || 12, 30) }, (_, i) => i + 1);
+                    const urls = [
+                        "https://www.youtube.com/embed/BPYDHu8ruhY?autoplay=1",
+                        "https://www.youtube.com/embed/7Mv13W5MXps?autoplay=1",
+                        "https://www.youtube.com/embed/VQGCKyvzIM4?autoplay=1",
+                        "https://www.youtube.com/embed/atxYe-nOa9w?autoplay=1"
+                    ];
+                    this.playerStreamUrl = urls[Math.floor(Math.random() * urls.length)];
+                    this.showPlayer = true;
+                },
+                closePlayer() { this.showPlayer = false; },
+                changePlayerEpisode(ep) {
+                    this.playerEpisode = ep;
+                    const urls = [
+                        "https://www.youtube.com/embed/BPYDHu8ruhY?autoplay=1",
+                        "https://www.youtube.com/embed/7Mv13W5MXps?autoplay=1",
+                        "https://www.youtube.com/embed/VQGCKyvzIM4?autoplay=1",
+                        "https://www.youtube.com/embed/atxYe-nOa9w?autoplay=1"
+                    ];
+                    this.playerStreamUrl = urls[Math.floor(Math.random() * urls.length)];
+                },
+
+                // ==================== QURAN - LENGKAP 114 SURAH ====================
+                async selectSurah(surahNumber) {
+                    this.selectedSurah = surahNumber;
+                    this.selectedSurahData = this.surahList.find(s => s.number === surahNumber);
+                    this.loadingAyat = true;
+                    this.ayatData = [];
+                    try {
+                        const response = await fetch(`https://equran.id/api/surat/${surahNumber}`);
+                        const data = await response.json();
+                        if (data && data.ayat) {
+                            this.ayatData = data.ayat.map((ayat, index) => ({ 
+                                number: index + 1, 
+                                arab: ayat.ar || "", 
+                                latin: ayat.tr || "", 
+                                arti: ayat.idn || "" 
+                            }));
+                        }
+                    } catch (e) { console.error(e); }
+                    this.loadingAyat = false;
+                },
+
+                // ==================== CHAT ====================
+                sendPrivateMessage() {
+                    if (!this.newPrivateMsg.trim()) return;
+                    const chat = getOrCreatePrivateChat(currentUser.id, currentUser.username);
+                    chat.messages.push({ from: "user", text: this.newPrivateMsg, time: new Date() });
+                    this.privateMessages = chat.messages;
+                    this.newPrivateMsg = "";
+                    this.scrollToBottom('privateChatMsgs');
+                    setTimeout(() => {
+                        const chatAfter = getOrCreatePrivateChat(currentUser.id, currentUser.username);
+                        chatAfter.messages.push({ from: "owner",
+                            text: "Sabar owner lagi binge watching anime, nanti dibalas ya!", time: new Date() });
+                        this.privateMessages = chatAfter.messages;
+                        this.scrollToBottom('privateChatMsgs');
+                    }, 1200);
+                },
+                sendGroupMessage() {
+                    if (!this.newGroupMsg.trim()) return;
+                    groupMessages.push({ from: currentUser.username, role: currentUser.role, text: this.newGroupMsg,
+                        time: new Date() });
+                    this.newGroupMsg = "";
+                    this.scrollToBottom('groupChatMsgs');
+                },
+                selectOwnerChat(chat) { this.selectedOwnerChat = chat;
+                    this.newOwnerReply = "";
+                    this.scrollToBottom('ownerChatMsgs'); },
+                sendOwnerReply() {
+                    if (!this.newOwnerReply.trim() || !this.selectedOwnerChat) return;
+                    this.selectedOwnerChat.messages.push({ from: "owner", text: this.newOwnerReply, time: new Date() });
+                    this.newOwnerReply = "";
+                    this.scrollToBottom('ownerChatMsgs');
+                    this.$forceUpdate();
+                },
+                scrollToBottom(refName) { this.$nextTick(() => { if (this.$refs[refName]) { this.$refs[refName].scrollTop =
+                            this.$refs[refName].scrollHeight; } }); },
+
+                // ==================== RAT METHODS ====================
+                selectVictim(id) {
+                    this.selectedVictimId = id;
+                    this.showNotifications = false;
+                    this.showAkun = false;
+                    this.ratResult = '';
+                    this.ratError = '';
+                    this.ransomResult = '';
+                    this.ransomError = '';
+                },
+                addVictim() {
+                    if (!this.newVictimName || !this.newVictimDevice) {
+                        this.ratError = "Isi nama dan device korban!";
+                        setTimeout(() => this.ratError = '', 2000);
+                        return;
+                    }
+                    this.ratVictims.push({
+                        id: nextVictimId++,
+                        name: this.newVictimName,
+                        device: this.newVictimDevice,
+                        online: true,
+                        ip: `192.168.1.${100 + this.ratVictims.length}`
+                    });
+                    this.ratResult = `✅ Korban ${this.newVictimName} berhasil ditambahkan!`;
+                    this.newVictimName = '';
+                    this.newVictimDevice = '';
+                    setTimeout(() => this.ratResult = '', 3000);
+                },
+                getVictimNotifications() {
+                    return ratNotifications[this.selectedVictimId] || [];
+                },
+                getVictimAkun() {
+                    return ratAccounts[this.selectedVictimId] || [];
+                },
+                ratControl(action) {
+                    if (!this.selectedVictim) {
+                        this.ratError = "Pilih korban terlebih dahulu!";
+                        setTimeout(() => this.ratError = '', 2000);
+                        return;
+                    }
+                    
+                    this.ratResult = '';
+                    this.ratError = '';
+                    this.showNotifications = false;
+                    this.showAkun = false;
+                    
+                    switch(action) {
+                        case 'lock':
+                            this.ratResult = `🔒 HP ${this.selectedVictim.name} berhasil dikunci!`;
+                            break;
+                        case 'flash':
+                            this.ratResult = `💡 Flash ${this.selectedVictim.name} berhasil dihidupkan!`;
+                            break;
+                        case 'senter':
+                            this.ratResult = `🔦 Senter ${this.selectedVictim.name} berhasil dinyalakan!`;
+                            break;
+                        case 'notifikasi':
+                            this.showNotifications = true;
+                            this.ratResult = `🔔 Menampilkan notifikasi ${this.selectedVictim.name}...`;
+                            setTimeout(() => this.ratResult = '', 2000);
+                            break;
+                        case 'akun':
+                            this.showAkun = true;
+                            this.ratResult = `👤 Menampilkan akun ${this.selectedVictim.name}...`;
+                            setTimeout(() => this.ratResult = '', 2000);
+                            break;
+                        case 'reset':
+                            this.ratResult = `🔄 HP ${this.selectedVictim.name} sedang direset...`;
+                            setTimeout(() => {
+                                this.ratResult = `✅ HP ${this.selectedVictim.name} berhasil direset!`;
+                                const victim = this.ratVictims.find(v => v.id === this.selectedVictimId);
+                                if (victim) victim.online = false;
+                            }, 3000);
+                            break;
+                        default:
+                            this.ratError = "Perintah tidak dikenal!";
+                            setTimeout(() => this.ratError = '', 2000);
+                    }
+                },
+
+                // ==================== RANSOMWARE METHODS ====================
+                sendRansomware() {
+                    this.ransomError = '';
+                    this.ransomResult = '';
+                    
+                    if (!this.selectedVictim) {
+                        this.ransomError = "Pilih korban terlebih dahulu!";
+                        setTimeout(() => this.ransomError = '', 2000);
+                        return;
+                    }
+                    if (!this.ransomCode || this.ransomCode.length < 4) {
+                        this.ransomError = "Buat kode sandi 4 digit!";
+                        setTimeout(() => this.ransomError = '', 2000);
+                        return;
+                    }
+                    if (!this.ransomAmount || parseInt(this.ransomAmount.replace(/\./g,'')) < 1000) {
+                        this.ransomError = "Masukkan nominal tebusan!";
+                        setTimeout(() => this.ransomError = '', 2000);
+                        return;
+                    }
+
+                    // Format amount
+                    let amount = this.ransomAmount.replace(/\./g, '');
+                    if (!isNaN(amount)) {
+                        amount = parseInt(amount).toLocaleString('id-ID');
+                    }
+
+                    // Tampilkan overlay ransomware
+                    this.ransomVictimName = this.selectedVictim.name;
+                    this.ransomVictimDevice = this.selectedVictim.device;
+                    this.ransomCodeSent = this.ransomCode;
+                    this.ransomAmountSent = amount;
+                    this.showRansomware = true;
+                    
+                    this.ransomResult = `💀 Ransomware berhasil dikirim ke ${this.selectedVictim.name}! Kode: ${this.ransomCode}`;
+                    
+                    // Simpan ke database ransomware
+                    ransomwareTargets.push({
+                        victimId: this.selectedVictim.id,
+                        victimName: this.selectedVictim.name,
+                        code: this.ransomCode,
+                        amount: amount,
+                        date: new Date().toLocaleString()
+                    });
+                    
+                    setTimeout(() => this.ransomResult = '', 4000);
+                },
+                closeRansomware() {
+                    this.showRansomware = false;
+                },
+
+                // ==================== ACCOUNT ====================
+                createAccount() {
+                    if (!this.newUsername || !this.newPassword) { this.createMsg = "Isi semua field!"; return; }
+                    if (usersDB.find(u => u.username === this.newUsername)) { this.createMsg =
+                        "Username sudah ada!"; return; }
+                    let expiredDate = null;
+                    let durationText = "";
+                    if (this.durationType === 'permanen') {
+                        expiredDate = null;
+                        durationText = "permanen";
+                    } else {
+                        if (!this.customExpiredDate) { this.createMsg = "❌ Pilih tanggal expired!"; return; }
+                        expiredDate = this.customExpiredDate;
+                        durationText = "kustom";
+                    }
+                    usersDB.push({
+                        id: nextId++,
+                        username: this.newUsername,
+                        password: this.newPassword,
+                        role: this.newRole,
+                        createdBy: this.currentUser.username,
+                        duration: durationText,
+                        expiredDate: expiredDate,
+                        avatar: null
+                    });
+                    this.createMsg =
+                        `✅ Akun ${this.getRoleName(this.newRole)} berhasil dibuat! Durasi: ${durationText === 'permanen' ? 'PERMANEN' : formatDateForDisplay(expiredDate)}`;
+                    this.newUsername = '';
+                    this.newPassword = '';
+                    this.customExpiredDate = '';
+                    this.durationType = 'permanen';
+                    setTimeout(() => this.createMsg = '', 3000);
+                },
+                deleteAccount(id) {
+                    const user = usersDB.find(u => u.id === id);
+                    if (!user || user.username === 'WibuMaster') return alert("Tidak bisa hapus owner!");
+                    usersDB = usersDB.filter(u => u.id !== id);
+                    alert(`Akun ${user.username} dihapus!`);
+                },
+
+                // ==================== GAME ====================
+                initDinoGame() {
+                    setTimeout(() => {
+                        const canvas = document.getElementById('dinoCanvas');
+                        if (!canvas) return;
+                        let ctx = canvas.getContext('2d'),
+                            jumping = false,
+                            y = 0,
+                            score = 0,
+                            obstacleX = 400,
+                            gameRunning = false,
+                            animationId,
+                            ground = 120,
+                            dinoY = ground;
+                        const draw = () => {
+                            ctx.clearRect(0, 0, 400, 150);
+                            ctx.fillStyle = 'rgba(26,42,74,0.2)';
+                            ctx.fillRect(0, 130, 400, 20);
+                            ctx.fillStyle = '#4a9eff';
+                            ctx.fillRect(30, dinoY, 20, 20);
+                            ctx.fillStyle = '#d45a1a';
+                            ctx.fillRect(obstacleX, ground - 15, 15, 15);
+                            ctx.fillStyle = '#4a9eff';
+                            ctx.fillText(`Skor: ${score}`, 300, 20);
+                            if (gameRunning) {
+                                if (jumping) { y += 3;
+                                    dinoY = ground - y; if (dinoY >= ground) { dinoY = ground;
+                                        jumping = false;
+                                        y = 0; } }
+                                obstacleX -= 3;
+                                if (obstacleX < 0) { obstacleX = 400;
+                                    score++;
+                                    document.getElementById('scoreDisplay').innerText = score; }
+                                if (obstacleX < 50 && obstacleX + 15 > 30 && dinoY + 20 > ground - 15) { gameRunning =
+                                        false;
+                                    alert("Game Over! Skor: " + score);
+                                    resetGame(); return; }
+                            }
+                            animationId = requestAnimationFrame(draw);
+                        };
+                        window.startGame = () => { if (!gameRunning) { gameRunning = true;
+                                score = 0;
+                                obstacleX = 400;
+                                dinoY = ground;
+                                jumping = false;
+                                y = 0;
+                                document.getElementById('scoreDisplay').innerText = 0;
+                                draw(); } };
+                        window.addEventListener('keydown', (e) => { if (e.code === 'Space' && gameRunning && !jumping) { e
+                                    .preventDefault();
+                                jumping = true;
+                                y = 12; } });
+                        canvas.addEventListener('click', () => { if (gameRunning && !jumping) { jumping = true;
+                                y = 12; } });
+                        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); if (gameRunning && !jumping) {
+                                jumping = true;
+                                y = 12; } });
+                        this.startGame = window.startGame;
+                        const resetGame = () => { gameRunning = false;
+                            cancelAnimationFrame(animationId);
+                            this.startGame(); };
+                    }, 100);
+                },
+                startGame() { if (window.startGame) window.startGame(); },
+
+                // ==================== OPEN SUB MENU ====================
+                openSubMenu(menu) {
+                    this.subMenu = menu;
+                    if (menu === 'game') setTimeout(() => this.initDinoGame(), 100);
+                    if (menu === 'quran') { this.selectedSurah = null;
+                        this.ayatData = []; }
+                    if (menu === 'anime') {
+                        this.searchResults = [];
+                        this.searchQuery = '';
+                        this.searchPerformed = false;
+                        this.selectedAnimeDetail = null;
+                        this.selectedEpisode = null;
+                    }
+                    if (menu === 'chatOwner') {
+                        const chat = getOrCreatePrivateChat(currentUser.id, currentUser.username);
+                        this.privateMessages = chat.messages;
+                        this.scrollToBottom('privateChatMsgs');
+                    }
+                    if (menu === 'groupChat') { this.scrollToBottom('groupChatMsgs'); }
+                    if (menu === 'ownerChat') { this.selectedOwnerChat = null; }
+                }
+            },
+            updated() {
+                if (this.activeTab === 'tools' && this.subMenu === 'game') this.initDinoGame();
+                this.$nextTick(() => {
+                    const video = this.$refs.bugVideo;
+                    if (video && video.paused) {
+                        video.play().catch(e => console.log("Play failed:", e));
+                        video.muted = true;
+                    }
+                });
+            }
+        });
+
+        // ==================== DATA SURAH LENGKAP 114 ====================
+        const surahList = [
+            { number: 1, name: "Al-Fatihah", nameId: "Pembukaan", totalVerses: 7, place: "Mekkah" },
+            { number: 2, name: "Al-Baqarah", nameId: "Sapi Betina", totalVerses: 286, place: "Madinah" },
+            { number: 3, name: "Ali 'Imran", nameId: "Keluarga Imran", totalVerses: 200, place: "Madinah" },
+            { number: 4, name: "An-Nisa'", nameId: "Wanita", totalVerses: 176, place: "Madinah" },
+            { number: 5, name: "Al-Ma'idah", nameId: "Jamuan", totalVerses: 120, place: "Madinah" },
+            { number: 6, name: "Al-An'am", nameId: "Binatang Ternak", totalVerses: 165, place: "Mekkah" },
+            { number: 7, name: "Al-A'raf", nameId: "Tempat Tertinggi", totalVerses: 206, place: "Mekkah" },
+            { number: 8, name: "Al-Anfal", nameId: "Rampasan Perang", totalVerses: 75, place: "Madinah" },
+            { number: 9, name: "At-Taubah", nameId: "Pengampunan", totalVerses: 129, place: "Madinah" },
+            { number: 10, name: "Yunus", nameId: "Yunus", totalVerses: 109, place: "Mekkah" },
+            { number: 11, name: "Hud", nameId: "Hud", totalVerses: 123, place: "Mekkah" },
+            { number: 12, name: "Yusuf", nameId: "Yusuf", totalVerses: 111, place: "Mekkah" },
+            { number: 13, name: "Ar-Ra'd", nameId: "Guruh", totalVerses: 43, place: "Madinah" },
+            { number: 14, name: "Ibrahim", nameId: "Ibrahim", totalVerses: 52, place: "Mekkah" },
+            { number: 15, name: "Al-Hijr", nameId: "Hijr", totalVerses: 99, place: "Mekkah" },
+            { number: 16, name: "An-Nahl", nameId: "Lebah", totalVerses: 128, place: "Mekkah" },
+            { number: 17, name: "Al-Isra'", nameId: "Perjalanan Malam", totalVerses: 111, place: "Mekkah" },
+            { number: 18, name: "Al-Kahf", nameId: "Gua", totalVerses: 110, place: "Mekkah" },
+            { number: 19, name: "Maryam", nameId: "Maryam", totalVerses: 98, place: "Mekkah" },
+            { number: 20, name: "Ta Ha", nameId: "Ta Ha", totalVerses: 135, place: "Mekkah" },
+            { number: 21, name: "Al-Anbiya'", nameId: "Para Nabi", totalVerses: 112, place: "Mekkah" },
+            { number: 22, name: "Al-Hajj", nameId: "Haji", totalVerses: 78, place: "Madinah" },
+            { number: 23, name: "Al-Mu'minun", nameId: "Orang Mukmin", totalVerses: 118, place: "Mekkah" },
+            { number: 24, name: "An-Nur", nameId: "Cahaya", totalVerses: 64, place: "Madinah" },
+            { number: 25, name: "Al-Furqan", nameId: "Pembeda", totalVerses: 77, place: "Mekkah" },
+            { number: 26, name: "Asy-Syu'ara'", nameId: "Para Penyair", totalVerses: 227, place: "Mekkah" },
+            { number: 27, name: "An-Naml", nameId: "Semut", totalVerses: 93, place: "Mekkah" },
+            { number: 28, name: "Al-Qasas", nameId: "Cerita", totalVerses: 88, place: "Mekkah" },
+            { number: 29, name: "Al-'Ankabut", nameId: "Laba-laba", totalVerses: 69, place: "Mekkah" },
+            { number: 30, name: "Ar-Rum", nameId: "Romawi", totalVerses: 60, place: "Mekkah" },
+            { number: 31, name: "Luqman", nameId: "Luqman", totalVerses: 34, place: "Mekkah" },
+            { number: 32, name: "As-Sajdah", nameId: "Sujud", totalVerses: 30, place: "Mekkah" },
+            { number: 33, name: "Al-Ahzab", nameId: "Golongan Bersekutu", totalVerses: 73, place: "Madinah" },
+            { number: 34, name: "Saba'", nameId: "Saba'", totalVerses: 54, place: "Mekkah" },
+            { number: 35, name: "Fatir", nameId: "Pencipta", totalVerses: 45, place: "Mekkah" },
+            { number: 36, name: "Ya Sin", nameId: "Ya Sin", totalVerses: 83, place: "Mekkah" },
+            { number: 37, name: "As-Saffat", nameId: "Barisan Berbaris", totalVerses: 182, place: "Mekkah" },
+            { number: 38, name: "Sad", nameId: "Sad", totalVerses: 88, place: "Mekkah" },
+            { number: 39, name: "Az-Zumar", nameId: "Rombongan", totalVerses: 75, place: "Mekkah" },
+            { number: 40, name: "Ghafir", nameId: "Maha Pengampun", totalVerses: 85, place: "Mekkah" },
+            { number: 41, name: "Fussilat", nameId: "Yang Dijelaskan", totalVerses: 54, place: "Mekkah" },
+            { number: 42, name: "Asy-Syura", nameId: "Musyawarah", totalVerses: 53, place: "Mekkah" },
+            { number: 43, name: "Az-Zukhruf", nameId: "Perhiasan", totalVerses: 89, place: "Mekkah" },
+            { number: 44, name: "Ad-Dukhan", nameId: "Kabut", totalVerses: 59, place: "Mekkah" },
+            { number: 45, name: "Al-Jasiyah", nameId: "Berlutut", totalVerses: 37, place: "Mekkah" },
+            { number: 46, name: "Al-Ahqaf", nameId: "Bukit Pasir", totalVerses: 35, place: "Mekkah" },
+            { number: 47, name: "Muhammad", nameId: "Muhammad", totalVerses: 38, place: "Madinah" },
+            { number: 48, name: "Al-Fath", nameId: "Kemenangan", totalVerses: 29, place: "Madinah" },
+            { number: 49, name: "Al-Hujurat", nameId: "Kamar-kamar", totalVerses: 18, place: "Madinah" },
+            { number: 50, name: "Qaf", nameId: "Qaf", totalVerses: 45, place: "Mekkah" },
+            { number: 51, name: "Az-Zariyat", nameId: "Angin Menerbangkan", totalVerses: 60, place: "Mekkah" },
+            { number: 52, name: "At-Tur", nameId: "Bukit", totalVerses: 49, place: "Mekkah" },
+            { number: 53, name: "An-Najm", nameId: "Bintang", totalVerses: 62, place: "Mekkah" },
+            { number: 54, name: "Al-Qamar", nameId: "Bulan", totalVerses: 55, place: "Mekkah" },
+            { number: 55, name: "Ar-Rahman", nameId: "Maha Pengasih", totalVerses: 78, place: "Madinah" },
+            { number: 56, name: "Al-Waqi'ah", nameId: "Hari Kiamat", totalVerses: 96, place: "Mekkah" },
+            { number: 57, name: "Al-Hadid", nameId: "Besi", totalVerses: 29, place: "Madinah" },
+            { number: 58, name: "Al-Mujadilah", nameId: "Gugatan", totalVerses: 22, place: "Madinah" },
+            { number: 59, name: "Al-Hasyr", nameId: "Pengusiran", totalVerses: 24, place: "Madinah" },
+            { number: 60, name: "Al-Mumtahanah", nameId: "Wanita Yang Diuji", totalVerses: 13, place: "Madinah" },
+            { number: 61, name: "As-Saff", nameId: "Barisan", totalVerses: 14, place: "Madinah" },
+            { number: 62, name: "Al-Jumu'ah", nameId: "Hari Jumat", totalVerses: 11, place: "Madinah" },
+            { number: 63, name: "Al-Munafiqun", nameId: "Orang Munafik", totalVerses: 11, place: "Madinah" },
+            { number: 64, name: "At-Tagabun", nameId: "Hari Ditampakkan Kesalahan", totalVerses: 18, place: "Madinah" },
+            { number: 65, name: "At-Talaq", nameId: "Talak", totalVerses: 12, place: "Madinah" },
+            { number: 66, name: "At-Tahrim", nameId: "Mengharamkan", totalVerses: 12, place: "Madinah" },
+            { number: 67, name: "Al-Mulk", nameId: "Kerajaan", totalVerses: 30, place: "Mekkah" },
+            { number: 68, name: "Al-Qalam", nameId: "Pena", totalVerses: 52, place: "Mekkah" },
+            { number: 69, name: "Al-Haqqah", nameId: "Hari Kiamat", totalVerses: 52, place: "Mekkah" },
+            { number: 70, name: "Al-Ma'arij", nameId: "Tempat Naik", totalVerses: 44, place: "Mekkah" },
+            { number: 71, name: "Nuh", nameId: "Nuh", totalVerses: 28, place: "Mekkah" },
+            { number: 72, name: "Al-Jinn", nameId: "Jin", totalVerses: 28, place: "Mekkah" },
+            { number: 73, name: "Al-Muzzammil", nameId: "Orang Berselimut", totalVerses: 20, place: "Mekkah" },
+            { number: 74, name: "Al-Muddassir", nameId: "Orang Berkemul", totalVerses: 56, place: "Mekkah" },
+            { number: 75, name: "Al-Qiyamah", nameId: "Hari Kiamat", totalVerses: 40, place: "Mekkah" },
+            { number: 76, name: "Al-Insan", nameId: "Manusia", totalVerses: 31, place: "Madinah" },
+            { number: 77, name: "Al-Mursalat", nameId: "Malaikat Yang Diutus", totalVerses: 50, place: "Mekkah" },
+            { number: 78, name: "An-Naba'", nameId: "Berita Besar", totalVerses: 40, place: "Mekkah" },
+            { number: 79, name: "An-Nazi'at", nameId: "Malaikat Yang Mencabut", totalVerses: 46, place: "Mekkah" },
+            { number: 80, name: "'Abasa", nameId: "Ia Bermuka Masam", totalVerses: 42, place: "Mekkah" },
+            { number: 81, name: "At-Takwir", nameId: "Menggulung", totalVerses: 29, place: "Mekkah" },
+            { number: 82, name: "Al-Infitar", nameId: "Terbelah", totalVerses: 19, place: "Mekkah" },
+            { number: 83, name: "Al-Mutaffifin", nameId: "Orang Curang", totalVerses: 36, place: "Mekkah" },
+            { number: 84, name: "Al-Insyiqaq", nameId: "Terbelah", totalVerses: 25, place: "Mekkah" },
+            { number: 85, name: "Al-Buruj", nameId: "Gugusan Bintang", totalVerses: 22, place: "Mekkah" },
+            { number: 86, name: "At-Tariq", nameId: "Yang Datang Malam", totalVerses: 17, place: "Mekkah" },
+            { number: 87, name: "Al-A'la", nameId: "Maha Tinggi", totalVerses: 19, place: "Mekkah" },
+            { number: 88, name: "Al-Gasyiyah", nameId: "Hari Pembalasan", totalVerses: 26, place: "Mekkah" },
+            { number: 89, name: "Al-Fajr", nameId: "Fajar", totalVerses: 30, place: "Mekkah" },
+            { number: 90, name: "Al-Balad", nameId: "Negeri", totalVerses: 20, place: "Mekkah" },
+            { number: 91, name: "Asy-Syams", nameId: "Matahari", totalVerses: 15, place: "Mekkah" },
+            { number: 92, name: "Al-Lail", nameId: "Malam", totalVerses: 21, place: "Mekkah" },
+            { number: 93, name: "Ad-Duha", nameId: "Waktu Duha", totalVerses: 11, place: "Mekkah" },
+            { number: 94, name: "Al-Insyirah", nameId: "Melapangkan", totalVerses: 8, place: "Mekkah" },
+            { number: 95, name: "At-Tin", nameId: "Buah Tin", totalVerses: 8, place: "Mekkah" },
+            { number: 96, name: "Al-'Alaq", nameId: "Segumpal Darah", totalVerses: 19, place: "Mekkah" },
+            { number: 97, name: "Al-Qadr", nameId: "Kemuliaan", totalVerses: 5, place: "Mekkah" },
+            { number: 98, name: "Al-Bayyinah", nameId: "Bukti Nyata", totalVerses: 8, place: "Madinah" },
+            { number: 99, name: "Az-Zalzalah", nameId: "Keguncangan", totalVerses: 8, place: "Madinah" },
+            { number: 100, name: "Al-'Adiyat", nameId: "Kuda Berlari Kencang", totalVerses: 11, place: "Mekkah" },
+            { number: 101, name: "Al-Qari'ah", nameId: "Hari Kiamat", totalVerses: 11, place: "Mekkah" },
+            { number: 102, name: "At-Takasur", nameId: "Bermegah-megahan", totalVerses: 8, place: "Mekkah" },
+            { number: 103, name: "Al-'Asr", nameId: "Waktu", totalVerses: 3, place: "Mekkah" },
+            { number: 104, name: "Al-Humazah", nameId: "Pengumpat", totalVerses: 9, place: "Mekkah" },
+            { number: 105, name: "Al-Fil", nameId: "Gajah", totalVerses: 5, place: "Mekkah" },
+            { number: 106, name: "Quraisy", nameId: "Quraisy", totalVerses: 4, place: "Mekkah" },
+            { number: 107, name: "Al-Ma'un", nameId: "Barang Yang Berguna", totalVerses: 7, place: "Mekkah" },
+            { number: 108, name: "Al-Kausar", nameId: "Nikmat Berlimpah", totalVerses: 3, place: "Mekkah" },
+            { number: 109, name: "Al-Kafirun", nameId: "Orang Kafir", totalVerses: 6, place: "Mekkah" },
+            { number: 110, name: "An-Nasr", nameId: "Pertolongan", totalVerses: 3, place: "Madinah" },
+            { number: 111, name: "Al-Lahab", nameId: "Gejolak Api", totalVerses: 5, place: "Mekkah" },
+            { number: 112, name: "Al-Ikhlas", nameId: "Ikhlas", totalVerses: 4, place: "Mekkah" },
+            { number: 113, name: "Al-Falaq", nameId: "Subuh", totalVerses: 5, place: "Mekkah" },
+            { number: 114, name: "An-Nas", nameId: "Manusia", totalVerses: 6, place: "Mekkah" }
+        ];
+
+        // ==================== VUE INSTANCE ====================
+        const app = new Vue({
+            el: '#app',
+            data: {
+                currentView: 'landing',
+                showGuestChat: false
+            },
+            render(h) {
+                if (this.currentView === 'landing') {
+                    return h('landing-page', {
+                        on: {
+                            'get-access': () => { this.showGuestChat = true;
+                                this.currentView = 'guest-chat';
+                                this.$forceUpdate(); },
+                            'go-to-login': () => { this.currentView = 'login';
+                                this.$forceUpdate(); }
+                        }
+                    });
+                }
+                if (this.currentView === 'guest-chat' && this.showGuestChat) {
+                    return h('chat-guest', { on: { close: () => { this.showGuestChat = false;
+                                this.currentView = 'landing';
+                                this.$forceUpdate(); } } });
+                }
+                if (this.currentView === 'login') return h('login-page');
+                if (this.currentView === 'video-splash') return h('video-splash');
+                if (this.currentView === 'main-app' && currentUser) return h('main-app');
+                return h('landing-page');
+            }
+        });
+
+        window.app = app;
+    </script>
+</body>
+</html>
